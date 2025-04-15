@@ -1,6 +1,0 @@
-@DiemEcommerce.API_HostAddress = http://localhost:5233
-
-GET {{DiemEcommerce.API_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
