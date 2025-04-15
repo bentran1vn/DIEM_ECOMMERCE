@@ -1,0 +1,52 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiemEcommerce.API", "DiemEcommerce.API\DiemEcommerce.API.csproj", "{AB9857D7-3078-41E1-B737-16FD27E55FAE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiemEcommerce.Domain", "DiemEcommerce.Domain\DiemEcommerce.Domain.csproj", "{A0C87666-4B47-499F-AAD9-AC5E6C1267D7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiemEcommerce.Contract", "DiemEcommerce.Contract\DiemEcommerce.Contract.csproj", "{C82F0042-010C-49D8-9981-9582875C8196}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiemEcommerce.Application", "DiemEcommerce.Application\DiemEcommerce.Application.csproj", "{2B5DB5EE-D42C-49E9-9706-0815FA547A8E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiemEcommerce.Persistence", "DiemEcommerce.Persistence\DiemEcommerce.Persistence.csproj", "{52E1E5B8-A23A-4870-B5E7-917E786EE14E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiemEcommerce.Presentation", "DiemEcommerce.Presentation\DiemEcommerce.Presentation.csproj", "{38BBBE32-9215-4CF8-BFA5-595DBC9CBAD4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiemEcommerce.Infrastructure", "DiemEcommerce.Infrastructure\DiemEcommerce.Infrastructure.csproj", "{1B105428-14B7-4F30-A806-F0434AE0F07A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AB9857D7-3078-41E1-B737-16FD27E55FAE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB9857D7-3078-41E1-B737-16FD27E55FAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB9857D7-3078-41E1-B737-16FD27E55FAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB9857D7-3078-41E1-B737-16FD27E55FAE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A0C87666-4B47-499F-AAD9-AC5E6C1267D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A0C87666-4B47-499F-AAD9-AC5E6C1267D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A0C87666-4B47-499F-AAD9-AC5E6C1267D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A0C87666-4B47-499F-AAD9-AC5E6C1267D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C82F0042-010C-49D8-9981-9582875C8196}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C82F0042-010C-49D8-9981-9582875C8196}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C82F0042-010C-49D8-9981-9582875C8196}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C82F0042-010C-49D8-9981-9582875C8196}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2B5DB5EE-D42C-49E9-9706-0815FA547A8E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B5DB5EE-D42C-49E9-9706-0815FA547A8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B5DB5EE-D42C-49E9-9706-0815FA547A8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2B5DB5EE-D42C-49E9-9706-0815FA547A8E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{52E1E5B8-A23A-4870-B5E7-917E786EE14E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{52E1E5B8-A23A-4870-B5E7-917E786EE14E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{52E1E5B8-A23A-4870-B5E7-917E786EE14E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{52E1E5B8-A23A-4870-B5E7-917E786EE14E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{38BBBE32-9215-4CF8-BFA5-595DBC9CBAD4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{38BBBE32-9215-4CF8-BFA5-595DBC9CBAD4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{38BBBE32-9215-4CF8-BFA5-595DBC9CBAD4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{38BBBE32-9215-4CF8-BFA5-595DBC9CBAD4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B105428-14B7-4F30-A806-F0434AE0F07A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B105428-14B7-4F30-A806-F0434AE0F07A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B105428-14B7-4F30-A806-F0434AE0F07A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B105428-14B7-4F30-A806-F0434AE0F07A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
