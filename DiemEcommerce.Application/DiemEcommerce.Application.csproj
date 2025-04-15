@@ -6,4 +6,10 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\DiemEcommerce.Contract\DiemEcommerce.Contract.csproj" />
+      <ProjectReference Include="..\DiemEcommerce.Domain\DiemEcommerce.Domain.csproj" />
+      <ProjectReference Include="..\DiemEcommerce.Persistence\DiemEcommerce.Persistence.csproj" />
+    </ItemGroup>
+
 </Project>

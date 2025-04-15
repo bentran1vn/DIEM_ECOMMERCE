@@ -6,4 +6,16 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <PackageReference Include="CloudinaryDotNet" Version="1.27.5" />
+      <PackageReference Include="MailKit" Version="4.7.1.1" />
+      <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="8.0.7" />
+      <PackageReference Include="MimeKit" Version="4.7.1" />
+      <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\DiemEcommerce.Application\DiemEcommerce.Application.csproj" />
+    </ItemGroup>
+
 </Project>
