@@ -37,7 +37,7 @@ services:
     image: redis:alpine
     container_name: diem-ecommerce-redis
     restart: unless-stopped
-    command: redis-server --requirepass ${REDIS_PASSWORD} --appendonly yes
+    command: redis-server --requirepass ${DB_PASSWORD} --appendonly yes
     ports:
       - "6379:6379"
     networks:
@@ -72,7 +72,7 @@ services:
     environment:
       ConnectionStrings__MasterConnection: Server=diem-ecommerce-master-sqlserver;Database=DiemEcommerceMaster;User=sa;Password=${DB_PASSWORD};Trust Server Certificate=True;
       ConnectionStrings__SlaveConnection: Server=diem-ecommerce-slave-sqlserver;Database=DiemEcommerceSlave;User=sa;Password=${DB_PASSWORD};Trust Server Certificate=True;
-      ConnectionStrings__Redis: diem-ecommerce-redis:6379,password=${REDIS_PASSWORD}
+      ConnectionStrings__Redis: diem-ecommerce-redis:6379,password=${DB_PASSWORD}
       Logging__LogLevel__Default: Error
       Logging__LogLevel__Microsoft: Error
       Logging__LogLevel__Microsoft.AspNetCore: Error
@@ -88,6 +88,9 @@ services:
       CloudinaryOptions__CloudName: ${CLOUDINARY_CLOUD_NAME}
       CloudinaryOptions__ApiKey: ${CLOUDINARY_API_KEY}
       CloudinaryOptions__ApiSecret: ${CLOUDINARY_API_SECRET}
+      SqlServerRetryOptions__MaxRetryCount: 5
+      SqlServerRetryOptions__MaxRetryDelay: "00:00:05"
+      SqlServerRetryOptions__ErrorNumbersToAdd: [ ]
       AllowedHosts: "*"
     networks:
       - diem-ecommerce-network
