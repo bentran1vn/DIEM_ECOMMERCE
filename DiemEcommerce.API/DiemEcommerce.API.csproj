@@ -8,13 +8,35 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="Asp.Versioning.Http" Version="8.1.0" />
+        <PackageReference Include="Asp.Versioning.Mvc.ApiExplorer" Version="8.1.0" />
+        <PackageReference Include="Carter" Version="8.1.0" />
+        <PackageReference Include="DotNetEnv" Version="3.1.1" />
+        <PackageReference Include="MicroElements.Swashbuckle.FluentValidation" Version="6.1.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.7" />
+        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.7" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.7">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Serilog.AspNetCore" Version="8.0.2" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2"/>
+        <PackageReference Include="Swashbuckle.AspNetCore.Newtonsoft" Version="6.7.1" />
     </ItemGroup>
 
     <ItemGroup>
       <Content Include="..\.dockerignore">
         <Link>.dockerignore</Link>
       </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\DiemEcommerce.Application\DiemEcommerce.Application.csproj" />
+      <ProjectReference Include="..\DiemEcommerce.Contract\DiemEcommerce.Contract.csproj" />
+      <ProjectReference Include="..\DiemEcommerce.Domain\DiemEcommerce.Domain.csproj" />
+      <ProjectReference Include="..\DiemEcommerce.Infrastructure\DiemEcommerce.Infrastructure.csproj" />
+      <ProjectReference Include="..\DiemEcommerce.Persistence\DiemEcommerce.Persistence.csproj" />
+      <ProjectReference Include="..\DiemEcommerce.Presentation\DiemEcommerce.Presentation.csproj" />
     </ItemGroup>
 
 </Project>
