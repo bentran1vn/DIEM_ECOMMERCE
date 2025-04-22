@@ -100,9 +100,6 @@ services:
       CloudinaryOptions__CloudName: ${CLOUDINARY_CLOUD_NAME}
       CloudinaryOptions__ApiKey: ${CLOUDINARY_API_KEY}
       CloudinaryOptions__ApiSecret: ${CLOUDINARY_API_SECRET}
-      # Update retry options for PostgreSQL
-      PostgresRetryOptions__MaxRetryCount: ${POSTGRESRETRYOPTIONS_MAXRETRYCOUNT:-5}
-      PostgresRetryOptions__MaxRetryDelay: ${POSTGRESRETRYOPTIONS_MAXRETRYDELAY:-30}
       AllowedHosts: "*"
     networks:
       - diem-ecommerce-network

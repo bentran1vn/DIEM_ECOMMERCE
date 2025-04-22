@@ -58,8 +58,7 @@ builder.Services.Configure<FormOptions>(options =>
 
 // Configure Options and SQL => Remember mapcarter
 builder.Services.AddInterceptorPersistence();
-builder.Services.ConfigureSqlServerRetryOptionsPersistence(builder.Configuration.GetSection(nameof(SqlServerRetryOptions)));
-builder.Services.AddSqlServerPersistence();
+builder.Services.AddPostgreSqlPersistence();
 builder.Services.AddRepositoryPersistence();
 
 builder.Services.AddJwtAuthenticationApi(builder.Configuration);
