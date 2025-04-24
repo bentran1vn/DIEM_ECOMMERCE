@@ -13,7 +13,7 @@ public class Commands
         public string Email { get; set; }
         public string Website { get; set; }
         public string Description { get; set; }
-        public FormFile Logo { get; set; }
+        public IFormFile Logo { get; set; }
         public string TaxCode { get; set; }
         public string BankAccount { get; set; }
         public string BankName { get; set; }
@@ -27,7 +27,7 @@ public class Commands
         public string Email { get; set; }
         public string Website { get; set; }
         public string Description { get; set; }
-        public FormFile Logo { get; set; }
+        public IFormFile Logo { get; set; }
         public string TaxCode { get; set; }
         public string BankAccount { get; set; }
         public string BankName { get; set; }
@@ -43,7 +43,7 @@ public class Commands
         public string Email { get; set; }
         public string Website { get; set; }
         public string Description { get; set; }
-        public FormFile Logo { get; set; }
+        public IFormFile Logo { get; set; }
         public string TaxCode { get; set; }
         public string BankAccount { get; set; }
         public string BankName { get; set; }
