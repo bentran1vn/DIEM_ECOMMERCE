@@ -89,10 +89,10 @@ services:
       Logging__LogLevel__Default: Error
       Logging__LogLevel__Microsoft: Error
       Logging__LogLevel__Microsoft.AspNetCore: Error
-      JwtOptions__SecretKey: ${JWT_SECRET}
-      JwtOptions__Issuer: ${JWT_ISSUER}
-      JwtOptions__Audience: ${JWT_AUDIENCE}
-      JwtOptions__ExpireMinutes: 28800
+      JwtOption__SecretKey: ${JWT_SECRET}
+      JwtOption__Issuer: ${JWT_ISSUER}
+      JwtOption__Audience: ${JWT_AUDIENCE}
+      JwtOption__ExpireMinutes: 28800
       MailOption__Mail: ${MAIL}
       MailOption__Password: ${MAIL_PASSWORD}
       MailOption__Host: ${MAIL_HOST}
