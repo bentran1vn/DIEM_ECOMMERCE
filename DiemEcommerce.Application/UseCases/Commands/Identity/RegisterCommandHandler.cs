@@ -39,10 +39,22 @@ public class RegisterCommandHandler : ICommandHandler<Command.RegisterCommand>
             Username = request.Username,
             FirstName = request.FirstName,
             LastName = request.LastName,
-            RoleId = Guid.NewGuid(),
             PhoneNumber = request.Phonenumber,
             Password = hashingPassword,
         };
+
+        if (request.Role == 0)
+        {
+            user.RolesId = new Guid("5a900888-430b-4073-a2f4-824659ff36bf");
+        }
+        else if (request.Role == 1)
+        {
+            user.RolesId = new Guid("6a900888-430b-4073-a2f4-824659ff36bf");
+        }
+        else
+        {
+            throw new Exception("Role not found !");
+        }
         
         _userRepository.Add(user);
 
