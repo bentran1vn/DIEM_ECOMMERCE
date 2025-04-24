@@ -1,5 +1,6 @@
 using DiemEcommerce.Persistence;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace DiemEcommerce.Application.Behaviors;
 
@@ -20,19 +21,17 @@ public sealed class TransactionPipelineBehavior<TRequest, TResponse>
         if (!IsCommand()) // In case TRequest is QueryRequest just ignore
             return await next();
 
-        await using var transaction = await _context.Database.BeginTransactionAsync(cancellationToken);
-        try
+        var strategy = _context.Database.CreateExecutionStrategy();
+        return await strategy.ExecuteAsync(async () =>
         {
-            var response = await next();
-            await _context.SaveChangesAsync(cancellationToken);
-            await transaction.CommitAsync(cancellationToken);
-            return response;
-        }
-        catch
-        {
-            await transaction.RollbackAsync(cancellationToken);
-            throw;
-        }
+            await using var transaction = await _context.Database.BeginTransactionAsync(cancellationToken);
+            {
+                var response = await next();
+                await _context.SaveChangesAsync(cancellationToken);
+                await transaction.CommitAsync(cancellationToken);
+                return response;
+            }
+        });
     }
 
     private bool IsCommand()
