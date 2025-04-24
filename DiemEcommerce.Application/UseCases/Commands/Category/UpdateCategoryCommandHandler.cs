@@ -23,6 +23,16 @@ public class UpdateCategoryCommandHandler: ICommandHandler<Contract.Services.Cat
             return Result.Failure(new Error("400", "Parent category not found"));
         }
         
+        var isExistName = await _categoryRepository.FindSingleAsync(
+            x => x.Name.Trim().ToLower().Equals(request.Name.Trim().ToLower()) &&
+                 !x.IsParent
+            , cancellationToken);
+        
+        if (isExistName == null)
+        {
+            return Result.Failure(new Error("400", "Exist category name"));
+        }
+        
         isExist.Name = request.Name;
         isExist.Description = request.Description;
         
