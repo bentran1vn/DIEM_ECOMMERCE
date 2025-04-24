@@ -18,17 +18,17 @@ public static class SwaggerExtensions
             {
                 Description = @"JWT Authorization header using the Bearer scheme. 
 
-                    Enter 'Bearer' [space] and then your token in the text input below.
+Enter 'Bearer' [space] and then your token in the text input below.
 
-                    Example: 'Bearer 12345abcdef'",
+Example: 'Bearer 12345abcdef'",
                 Name = "Authorization",
                 In = ParameterLocation.Header,
-                Type = SecuritySchemeType.ApiKey,
+                Type = SecuritySchemeType.Http,
                 Scheme = JwtBearerDefaults.AuthenticationScheme,
                 BearerFormat = "JWT"
             });
             
-            c.AddSecurityRequirement(new OpenApiSecurityRequirement()
+            c.AddSecurityRequirement(new OpenApiSecurityRequirement
             {
                 {
                     new OpenApiSecurityScheme
@@ -46,43 +46,41 @@ public static class SwaggerExtensions
                 }
             });
             
-            c.OperationFilter<SwaggerFileOperationFilter>();
+            c.OperationFilter<SwaggerFormDataOperationFilter>();
             c.EnableAnnotations();
             
         });
         services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
     }
     
-    public class SwaggerFileOperationFilter : IOperationFilter
+    public class SwaggerFormDataOperationFilter : IOperationFilter
     {
         public void Apply(OpenApiOperation operation, OperationFilterContext context)
         {
-            var fileParameters = context.MethodInfo.GetParameters()
-                .Where(p => p.ParameterType.IsAssignableFrom(typeof(IFormFile)) ||
-                            (p.ParameterType.IsGenericType && 
-                             p.ParameterType.GetGenericArguments().Any(arg => arg.IsAssignableFrom(typeof(IFormFile)))))
+            var formParameters = context.MethodInfo
+                .GetParameters()
+                .Where(p => p.GetCustomAttributes(true)
+                    .Any(attr => attr.GetType() == typeof(FromFormAttribute)))
                 .ToList();
-
-            if (fileParameters.Count > 0)
+    
+            if (formParameters.Any())
             {
-                // Ensure consumes is set correctly for file upload
-                operation.RequestBody = new OpenApiRequestBody
+                foreach (var param in formParameters)
                 {
-                    Content = 
+                    operation.RequestBody = new OpenApiRequestBody
                     {
-                        ["multipart/form-data"] = new OpenApiMediaType
-                        {
-                            Schema = context.SchemaGenerator.GenerateSchema(context.MethodInfo.GetParameters()
-                                .First(p => p.ParameterType
-                                    .GetProperties()
-                                    .Any(prop => prop.PropertyType.IsAssignableFrom(typeof(IFormFile))))
-                                .ParameterType, context.SchemaRepository)
+                        Content = {
+                            ["multipart/form-data"] = new OpenApiMediaType
+                            {
+                                Schema = context.SchemaGenerator.GenerateSchema(param.ParameterType, context.SchemaRepository)
+                            }
                         }
-                    }
-                };
+                    };
+                }
             }
         }
     }
+
 
     public static void UseSwaggerApi(this WebApplication app)
     {
