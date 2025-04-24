@@ -8,9 +8,9 @@ public class Categories : Entity<Guid>, IAuditableEntity
     public string Description { get; set; }
     public Guid? ParentId { get; set; }
     public bool IsParent { get; set; } = false;
-    public Categories? Parent { get; set; } = default!;
-    public ICollection<Categories> Children { get; set; } = new List<Categories>();
-    public ICollection<Matches> Matches { get; set; } = new List<Matches>();
+    public virtual Categories? Parent { get; set; } = default!;
+    public virtual ICollection<Categories> Children { get; set; } = new List<Categories>();
+    public virtual ICollection<Matches> Matches { get; set; } = new List<Matches>();
     public DateTimeOffset CreatedOnUtc { get; set; }
     public DateTimeOffset? ModifiedOnUtc { get; set; }
 }

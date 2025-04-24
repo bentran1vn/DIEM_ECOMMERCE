@@ -5,7 +5,6 @@ using DiemEcommerce.Application.DependencyInjection.Extensions;
 using DiemEcommerce.Infrastructure.DependencyInjection.Extensions;
 using DiemEcommerce.Infrastructure.DependencyInjection.Options;
 using DiemEcommerce.Persistence.DependencyInjection.Extensions;
-using DiemEcommerce.Persistence.DependencyInjection.Options;
 using DotNetEnv;
 using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Http.Features;
@@ -105,4 +104,7 @@ finally
     await app.DisposeAsync();
 }
 
-public partial class Program { }
+namespace DiemEcommerce.API
+{
+    public partial class Program { }
+}

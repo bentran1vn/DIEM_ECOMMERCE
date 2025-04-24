@@ -10,10 +10,10 @@ public class OrderDetails: Entity<Guid>, IAuditableEntity
     public decimal TotalPrice { get; set; }
     
     public Guid OrderId { get; set; }
-    public Orders Order { get; set; } = default!;
+    public virtual Orders Order { get; set; } = default!;
     
     public Guid MatchId { get; set; }
-    public Matches Match { get; set; } = default!;
+    public virtual Matches Match { get; set; } = default!;
     
     public Guid? FeedbackId { get; set; }
     
