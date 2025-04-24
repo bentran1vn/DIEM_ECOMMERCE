@@ -13,7 +13,7 @@ public class Orders: Entity<Guid>, IAuditableEntity
     public int Status { get; set; }
     
     public Guid CustomerId { get; set; }
-    public Customers Customer { get; set; } = default!;
+    public virtual Customers Customer { get; set; } = default!;
     
     public DateTimeOffset CreatedOnUtc { get; set; }
     public DateTimeOffset? ModifiedOnUtc { get; set; }
