@@ -18,13 +18,13 @@ public class DeleteCategoryCommandHandler: ICommandHandler<Contract.Services.Cat
     public async Task<Result> Handle(Contract.Services.Category.Commands.DeleteCategoryCommand request, CancellationToken cancellationToken)
     {
         var isExist = await _categoryRepository.FindByIdAsync(request.Id, cancellationToken);
-        if (isExist == null)
+        if (isExist == null || isExist.IsDeleted)
         {
-            return Result.Failure(new Error("400", "Parent category not found"));
+            return Result.Failure(new Error("404", "Category not found"));
         }
         
         _categoryRepository.Remove(isExist);
 
-        return Result.Success("Create category successfully");
+        return Result.Success("Delete category successfully");
     }
 }

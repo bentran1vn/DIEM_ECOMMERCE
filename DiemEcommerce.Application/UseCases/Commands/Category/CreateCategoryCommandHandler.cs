@@ -17,6 +17,16 @@ public class CreateCategoryCommandHandler: ICommandHandler<Contract.Services.Cat
 
     public async Task<Result> Handle(Contract.Services.Category.Commands.CreateCategoryCommand request, CancellationToken cancellationToken)
     {
+        var isExistName = await _categoryRepository.FindSingleAsync(
+            x => x.Name.Trim().ToLower().Equals(request.Name.Trim().ToLower()) &&
+                 !x.IsParent
+            , cancellationToken);
+        
+        if (isExistName == null)
+        {
+            return Result.Failure(new Error("400", "Exist category name"));
+        }
+        
         if(request.ParentId != null)
         {
             var isExist = await _categoryRepository.FindByIdAsync(request.ParentId.Value, cancellationToken);
@@ -32,6 +42,7 @@ public class CreateCategoryCommandHandler: ICommandHandler<Contract.Services.Cat
             Name = request.Name,
             Description = request.Description,
             ParentId = request.ParentId,
+            IsParent = request.ParentId == null ? true : false,
         };
         
         _categoryRepository.Add(category);
