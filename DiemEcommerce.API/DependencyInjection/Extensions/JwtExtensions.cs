@@ -42,7 +42,7 @@ public static class JwtExtensions
                 ValidIssuer = jwtOption.Issuer,
                 ValidAudience = jwtOption.Audience,
                 IssuerSigningKey = new SymmetricSecurityKey(key),
-                ClockSkew = TimeSpan.Zero
+                ClockSkew = TimeSpan.FromMinutes(5), 
             };
 
             o.Events = new JwtBearerEvents
@@ -61,14 +61,15 @@ public static class JwtExtensions
             // o.EventsType = typeof(CustomJwtBearerEvents);
         });
 
-        services.AddAuthorization(opts =>
-        {
-            opts.AddPolicy(RoleNames.Customer, policy => policy.RequireRole("0")); //Customer
-            opts.AddPolicy(RoleNames.Seller, policy => policy.RequireRole("1")); //Seller
-            opts.AddPolicy(RoleNames.Admin, policy => policy.RequireRole("2")); //Admin
-            opts.AddPolicy(RoleNames.CustomerAndSeller, policy => policy.RequireRole("0", "1")); //CustomerAndSeller
-            opts.AddPolicy(RoleNames.AdminAndSeller, policy => policy.RequireRole("2", "1")); //CustomerAndSeller
-        });
+        services.AddAuthorization();
+            //opts =>
+        // {
+        //     opts.AddPolicy(RoleNames.Customer, policy => policy.RequireRole("0")); //Customer
+        //     opts.AddPolicy(RoleNames.Seller, policy => policy.RequireRole("1")); //Seller
+        //     opts.AddPolicy(RoleNames.Admin, policy => policy.RequireRole("2")); //Admin
+        //     opts.AddPolicy(RoleNames.CustomerAndSeller, policy => policy.RequireRole("0", "1")); //CustomerAndSeller
+        //     opts.AddPolicy(RoleNames.AdminAndSeller, policy => policy.RequireRole("2", "1")); //CustomerAndSeller
+        // });
         // services.AddScoped<CustomJwtBearerEvents>();
     }
 }

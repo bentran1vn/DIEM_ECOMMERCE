@@ -52,11 +52,12 @@ public class GetLoginQueryHandler : IQueryHandler<Query.Login, Response.Authenti
         var claims = new List<Claim>
         {
             new Claim(ClaimTypes.Email, request.EmailOrUserName),
-            new Claim(ClaimTypes.Role, user.Roles.ToString()),
-            new Claim("Role", user.Roles.ToString()),
+            new Claim(ClaimTypes.Role, user.Roles.Id.ToString()),
+            new Claim("RoleId", user.Roles.Id.ToString()),
+            new Claim("RoleName", user.Roles.Name),
             new Claim("UserId", user.Id.ToString()),
             new Claim(ClaimTypes.Name, request.EmailOrUserName),
-            new Claim(ClaimTypes.Expired, TimeZoneInfo.ConvertTime(DateTimeOffset.UtcNow.AddMinutes(5), vietnamTimeZone).ToString())
+            new Claim(ClaimTypes.Expired, DateTime.UtcNow.AddMinutes(5).ToString("o"))
         };
         
         // if (user.Role.Equals(1) && user.Vendor?.Status == 0)
