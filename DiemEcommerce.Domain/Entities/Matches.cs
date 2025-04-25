@@ -6,7 +6,7 @@ public class Matches: Entity<Guid>, IAuditableEntity
 {
     public string Name { get; set; }
     public string Description { get; set; }
-    public ICollection<string> CoverImages { get; set; }
+    public virtual ICollection<MatchMedias> CoverImages { get; set; }
     
     public Guid FactoryId { get; set; }
     public virtual Factories Factories { get; set; }

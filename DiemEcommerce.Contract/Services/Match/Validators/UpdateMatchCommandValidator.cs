@@ -17,12 +17,6 @@ public class UpdateMatchCommandValidator : AbstractValidator<Commands.UpdateMatc
             .NotEmpty().WithMessage("Description is required.")
             .MaximumLength(500).WithMessage("Description must not exceed 500 characters.");
 
-        RuleFor(x => x.CoverImages)
-            .NotEmpty().WithMessage("At least one cover image is required.");
-            
-        RuleForEach(x => x.CoverImages)
-            .NotEmpty().WithMessage("Cover image URL cannot be empty.");
-
         RuleFor(x => x.FactoryId)
             .NotEmpty().WithMessage("Factory ID is required.");
 
