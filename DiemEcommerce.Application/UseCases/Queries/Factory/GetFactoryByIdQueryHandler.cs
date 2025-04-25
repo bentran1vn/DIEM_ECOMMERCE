@@ -21,7 +21,7 @@ public class GetFactoryByIdQueryHandler: IQueryHandler<Contract.Services.Factory
         var factories = await _factoryRepository.FindByIdAsync(request.Id, cancellationToken);
         
         if (factories == null)
-            return Result.Failure<Responses.FactoryResponse>(new Error("500", "Factory not found"));
+            return Result.Failure<Responses.FactoryResponse>(new Error("404", "Factory not found"));
         
         var factoryResponse = new Responses.FactoryResponse(
             factories.Id, factories.Name, factories.Address, factories.PhoneNumber, factories.Email, factories.Website,

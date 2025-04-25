@@ -61,7 +61,10 @@ public class FactoryApi : ApiEndpoint, ICarterModule
     {
         var userId = context.User.FindFirst("UserId")?.Value!;
         
-        var result = await sender.Send(new Commands.CreateFactoryCommand(command, new Guid(userId)));
+        if (!Guid.TryParse(userId, out var userGuid))
+            return Results.BadRequest("Invalid UserId format.");
+        
+        var result = await sender.Send(new Commands.CreateFactoryCommand(command, userGuid));
         
         if (result.IsFailure)
             return HandlerFailure(result);
@@ -74,9 +77,13 @@ public class FactoryApi : ApiEndpoint, ICarterModule
     {
         if (id != command.Id)
             return Results.BadRequest("ID in route and body must match");
+        
         var userId = context.User.FindFirst("UserId")?.Value!;
         
-        var result = await sender.Send(new Commands.UpdateFactoryCommand(command, new Guid(userId)));
+        if (!Guid.TryParse(userId, out var userGuid))
+            return Results.BadRequest("Invalid UserId format.");
+        
+        var result = await sender.Send(new Commands.UpdateFactoryCommand(command, userGuid));
         
         if (result.IsFailure)
             return HandlerFailure(result);
