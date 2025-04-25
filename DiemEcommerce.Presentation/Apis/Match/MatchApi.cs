@@ -51,7 +51,7 @@ public class MatchApi: ApiEndpoint, ICarterModule
         var factoryId = context.User.FindFirst("FactoryId")?.Value!;
         
         if (!Guid.TryParse(factoryId, out var factoryGuid))
-            return Results.BadRequest("Invalid UserId format.");
+            return Results.BadRequest("Invalid FactoryId format.");
         
         var result = await sender.Send(new Commands.CreateMatchCommand(factoryGuid, command));
         
@@ -70,7 +70,7 @@ public class MatchApi: ApiEndpoint, ICarterModule
         var factoryId = context.User.FindFirst("FactoryId")?.Value!;
         
         if (!Guid.TryParse(factoryId, out var factoryGuid))
-            return Results.BadRequest("Invalid UserId format.");
+            return Results.BadRequest("Invalid FactoryId format.");
         
         var result = await sender.Send(new Commands.UpdateMatchCommand(factoryGuid, command));
         
@@ -89,7 +89,7 @@ public class MatchApi: ApiEndpoint, ICarterModule
         var factoryId = context.User.FindFirst("FactoryId")?.Value!;
         
         if (!Guid.TryParse(factoryId, out var factoryGuid))
-            return Results.BadRequest("Invalid UserId format.");
+            return Results.BadRequest("Invalid FactoryId format.");
         
         var result = await sender.Send(new Commands.DeleteMatchCommand(factoryGuid, command));
         
