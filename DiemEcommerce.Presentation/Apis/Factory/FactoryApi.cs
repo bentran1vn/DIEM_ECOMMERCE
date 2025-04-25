@@ -25,16 +25,20 @@ public class FactoryApi : ApiEndpoint, ICarterModule
         group1.MapPost("", CreateFactoryV1)
             .DisableAntiforgery()
             .RequireAuthorization()
-            .Accepts<Commands.CreateFactoryBody>("multipart/form-data");;
+            .Accepts<Commands.CreateFactoryBody>("multipart/form-data");
         
-        group1.MapPut("{id}", UpdateFactoryV1).RequireAuthorization();
+        group1.MapPut("{id}", UpdateFactoryV1)
+            .DisableAntiforgery()
+            .RequireAuthorization()
+            .Accepts<Commands.UpdateFactoryBody>("multipart/form-data");
         
         group1.MapDelete("{id}", DeleteFactoryV1).RequireAuthorization();
     }
     
-    public static async Task<IResult> GetAllFactoriesV1(ISender sender)
+    public static async Task<IResult> GetAllFactoriesV1(ISender sender, int pageIndex = 1, int pageSize = 10,
+        string? searchTerm = null)
     {
-        var result = await sender.Send(new Queries.GetAllFactoriesQuery());
+        var result = await sender.Send(new Queries.GetAllFactoriesQuery(pageIndex, pageSize, searchTerm));
         
         if (result.IsFailure)
             return HandlerFailure(result);
@@ -56,20 +60,11 @@ public class FactoryApi : ApiEndpoint, ICarterModule
         HttpContext context, [FromForm] Commands.CreateFactoryBody command)
     {
         var userId = context.User.FindFirst("UserId")?.Value!;
-        var result = await sender.Send(new Commands.CreateFactoryCommand
-        {
-            Name = command.Name,
-            Address = command.Address,
-            PhoneNumber = command.PhoneNumber,
-            Email = command.Email,
-            Website = command.Website,
-            Description = command.Description,
-            Logo = command.Logo,
-            TaxCode = command.TaxCode,
-            BankAccount = command.BankAccount,
-            BankName = command.BankName,
-            UserId = new Guid(userId)
-        });
+        
+        if (!Guid.TryParse(userId, out var userGuid))
+            return Results.BadRequest("Invalid UserId format.");
+        
+        var result = await sender.Send(new Commands.CreateFactoryCommand(command, userGuid));
         
         if (result.IsFailure)
             return HandlerFailure(result);
@@ -77,12 +72,18 @@ public class FactoryApi : ApiEndpoint, ICarterModule
         return Results.Ok(result);
     }
     
-    public static async Task<IResult> UpdateFactoryV1(ISender sender, [FromForm] Commands.UpdateFactoryCommand command, Guid id)
+    public static async Task<IResult> UpdateFactoryV1(ISender sender, HttpContext context,
+        [FromForm] Commands.UpdateFactoryBody command, Guid id)
     {
         if (id != command.Id)
             return Results.BadRequest("ID in route and body must match");
-            
-        var result = await sender.Send(command);
+        
+        var userId = context.User.FindFirst("UserId")?.Value!;
+        
+        if (!Guid.TryParse(userId, out var userGuid))
+            return Results.BadRequest("Invalid UserId format.");
+        
+        var result = await sender.Send(new Commands.UpdateFactoryCommand(command, userGuid));
         
         if (result.IsFailure)
             return HandlerFailure(result);
@@ -90,9 +91,11 @@ public class FactoryApi : ApiEndpoint, ICarterModule
         return Results.Ok(result);
     }
     
-    public static async Task<IResult> DeleteFactoryV1(ISender sender, Guid id)
+    public static async Task<IResult> DeleteFactoryV1(ISender sender, HttpContext context, Guid id)
     {
-        var result = await sender.Send(new Commands.DeleteFactoryCommand(id));
+        var userId = context.User.FindFirst("UserId")?.Value!;
+        
+        var result = await sender.Send(new Commands.DeleteFactoryCommand(id, new Guid(userId)));
         
         if (result.IsFailure)
             return HandlerFailure(result);

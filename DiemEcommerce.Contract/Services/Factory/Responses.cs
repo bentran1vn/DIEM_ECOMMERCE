@@ -14,6 +14,6 @@ public static class Responses
         string TaxCode, 
         string BankAccount, 
         string BankName,
-        Guid UserId,
+        Guid? UserId,
         DateTimeOffset CreatedOnUtc);
 }
