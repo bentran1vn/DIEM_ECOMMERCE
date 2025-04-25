@@ -1,0 +1,70 @@
+using DiemEcommerce.Contract.Abstractions.Messages;
+using Microsoft.AspNetCore.Http;
+
+namespace DiemEcommerce.Contract.Services.Match;
+
+public class Commands
+{
+    public class CreateMatchBody
+    {
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public IFormFileCollection CoverImages { get; set; }
+        public Guid CategoryId { get; set; } 
+    }
+    
+    public class CreateMatchCommand : CreateMatchBody, ICommand
+    {
+        public CreateMatchCommand(Guid factoryId, CreateMatchBody body)
+        {
+            Name = body.Name;
+            Description = body.Description;
+            CoverImages = body.CoverImages;
+            CategoryId = body.CategoryId;
+            FactoryId = factoryId;
+        }
+
+        public Guid FactoryId { get; set; }
+    }
+    
+    public class UpdateMatchBody
+    {
+        public Guid Id { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public IFormFileCollection CoverImages { get; set; }
+        public Guid CategoryId { get; set; } 
+    }
+    
+    public class UpdateMatchCommand : UpdateMatchBody, ICommand
+    {
+        public UpdateMatchCommand(Guid factoryId, UpdateMatchBody body)
+        {
+            
+            Id = body.Id;
+            Name = body.Name;
+            Description = body.Description;
+            CoverImages = body.CoverImages;
+            CategoryId = body.CategoryId;
+            FactoryId = factoryId;
+        }
+
+        public Guid FactoryId { get; set; }
+    }
+    
+    public record DeleteMatchBody
+    {
+        public Guid Id { get; set; }
+    }
+    
+    public record DeleteMatchCommand :DeleteMatchBody, ICommand
+    {
+        public DeleteMatchCommand(Guid factoryId, DeleteMatchBody body)
+        {
+            Id = body.Id;
+            FactoryId = factoryId;
+        }
+
+        public Guid FactoryId { get; set; }
+    }
+}

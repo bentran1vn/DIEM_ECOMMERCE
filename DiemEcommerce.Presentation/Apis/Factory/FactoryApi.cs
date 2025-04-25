@@ -22,6 +22,8 @@ public class FactoryApi : ApiEndpoint, ICarterModule
         
         group1.MapGet("{id}", GetFactoryByIdV1);
         
+        group1.MapGet("{id}/matches", GetMatchesByFactoryIdV1);
+        
         group1.MapPost("", CreateFactoryV1)
             .DisableAntiforgery()
             .RequireAuthorization()
@@ -96,6 +98,16 @@ public class FactoryApi : ApiEndpoint, ICarterModule
         var userId = context.User.FindFirst("UserId")?.Value!;
         
         var result = await sender.Send(new Commands.DeleteFactoryCommand(id, new Guid(userId)));
+        
+        if (result.IsFailure)
+            return HandlerFailure(result);
+
+        return Results.Ok(result);
+    }
+    
+    public static async Task<IResult> GetMatchesByFactoryIdV1(ISender sender, Guid id)
+    {
+        var result = await sender.Send(new Contract.Services.Match.Queries.GetMatchByFactoryIdQuery(id));
         
         if (result.IsFailure)
             return HandlerFailure(result);
