@@ -52,7 +52,7 @@ public class GetLoginQueryHandler : IQueryHandler<Query.Login, Response.Authenti
         var claims = new List<Claim>
         {
             new Claim(ClaimTypes.Email, request.EmailOrUserName),
-            new Claim(ClaimTypes.Role, user.Roles.Id.ToString()),
+            new Claim(ClaimTypes.Role, user.Roles.Name),
             new Claim("RoleId", user.Roles.Id.ToString()),
             new Claim("RoleName", user.Roles.Name),
             new Claim("UserId", user.Id.ToString()),
