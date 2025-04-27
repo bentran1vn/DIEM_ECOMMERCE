@@ -1,6 +1,7 @@
 using System.Text;
-using DiemEcommerce.Contract.Constrant.SystemRoles;
+using DiemEcommerce.Contract.Constant.SystemRoles;
 using DiemEcommerce.Infrastructure.DependencyInjection.Options;
+using DiemEcommerce.Persistence.Constrants;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 
@@ -19,16 +20,7 @@ public static class JwtExtensions
         {
             JwtOption jwtOption = new JwtOption();
             configuration.GetSection(nameof(JwtOption)).Bind(jwtOption);
-
-            /**
-             * Storing the JWT in the AuthenticationProperties allows you to retrieve it from elsewhere within your application.
-             * public async Task<IActionResult> SomeAction()
-                {
-                    // using Microsoft.AspNetCore.Authentication;
-                    var accessToken = await HttpContext.GetTokenAsync("access_token");
-                    // ...
-                }
-             */
+            
             o.SaveToken = true; // Save token into AuthenticationProperties
 
             var key = Encoding.UTF8.GetBytes(jwtOption.SecretKey);
@@ -61,15 +53,18 @@ public static class JwtExtensions
             // o.EventsType = typeof(CustomJwtBearerEvents);
         });
 
-        services.AddAuthorization();
-            //opts =>
-        // {
-        //     opts.AddPolicy(RoleNames.Customer, policy => policy.RequireRole("0")); //Customer
-        //     opts.AddPolicy(RoleNames.Seller, policy => policy.RequireRole("1")); //Seller
-        //     opts.AddPolicy(RoleNames.Admin, policy => policy.RequireRole("2")); //Admin
-        //     opts.AddPolicy(RoleNames.CustomerAndSeller, policy => policy.RequireRole("0", "1")); //CustomerAndSeller
-        //     opts.AddPolicy(RoleNames.AdminAndSeller, policy => policy.RequireRole("2", "1")); //CustomerAndSeller
-        // });
-        // services.AddScoped<CustomJwtBearerEvents>();
+        services.AddAuthorization(
+            opts =>
+         {
+             opts.AddPolicy(RoleNames.Customer, policy => policy.RequireRole(RoleNames.Customer));
+             opts.AddPolicy(RoleNames.Factory, policy => policy.RequireRole(RoleNames.Factory));
+             opts.AddPolicy(RoleNames.Admin, policy => policy.RequireRole(RoleNames.Admin));
+             opts.AddPolicy(RoleNames.CustomerFactory, policy => policy.RequireRole(RoleNames.Customer, RoleNames.Factory));
+             opts.AddPolicy(RoleNames.CustomerAdmin, policy => policy.RequireRole(RoleNames.Customer, RoleNames.Admin));
+             opts.AddPolicy(RoleNames.FactoryAdmin, policy => policy.RequireRole(RoleNames.Factory, RoleNames.Admin));
+             opts.AddPolicy(RoleNames.CustomerFactoryAdmin, policy => policy.RequireRole(RoleNames.Customer, RoleNames.Factory, RoleNames.Admin));
+         });
+        
+         // services.AddScoped<CustomJwtBearerEvents>();
     }
 }
