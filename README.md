@@ -100,7 +100,7 @@ The system uses PostgreSQL and includes entities such as:
 
 1. Clone the repository
 ```bash
-git clone https://github.com/yourusername/DiemEcommerce.git
+git clone https://github.com/bentran1vn/DiemEcommerce.git
 cd DiemEcommerce
 ```
 
