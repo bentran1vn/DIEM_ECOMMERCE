@@ -53,7 +53,7 @@ public class GetMatchByIdQueryHandler : IQueryHandler<Contract.Services.Match.Qu
             FactoryBankAccount = match.Factories.BankAccount,
             FactoryBankName = match.Factories.BankName,
             FactoryLogo = match.Factories.Logo,
-            Feedbacks = new List<Contract.Services.Feedback.Response.UserFeedbackResponse>() // Initialize empty feedbacks list
+            Feedbacks = new List<Contract.Services.Feedback.Responses.FeedbackResponse>() // Initialize empty feedbacks list
         };
 
         return Result.Success(response);

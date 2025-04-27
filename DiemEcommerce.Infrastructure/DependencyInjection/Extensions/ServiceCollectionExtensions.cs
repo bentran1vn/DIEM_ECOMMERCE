@@ -9,6 +9,7 @@ using DiemEcommerce.Infrastructure.PasswordHasher;
 using DiemEcommerce.Infrastructure.Caching;
 using DiemEcommerce.Infrastructure.Mail;
 using DiemEcommerce.Infrastructure.Media;
+using DiemEcommerce.Infrastructure.Transactions;
 
 namespace DiemEcommerce.Infrastructure.DependencyInjection.Extensions;
 
@@ -21,6 +22,7 @@ public static class ServiceCollectionExtensions
             .AddTransient<ICacheService, CacheService>()
             .AddTransient<IMediaService, CloudinaryService>()
             .AddSingleton<IMailService, MailService>()
+            .AddTransient<ITransactionService, TransactionService>()
             .AddSingleton<Cloudinary>((provider) =>
             {
                 var options = provider.GetRequiredService<IOptionsMonitor<CloudinaryOptions>>();
