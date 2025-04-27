@@ -30,6 +30,6 @@ public class Responses
         public string FactoryBankAccount { get; set; }
         public string FactoryBankName { get; set; }
         public string FactoryLogo { get; set; }
-        public ICollection<Feedback.Response.UserFeedbackResponse> Feedbacks { get; set; }
+        public ICollection<Contract.Services.Feedback.Responses.FeedbackResponse> Feedbacks { get; set; }
     }
 }
