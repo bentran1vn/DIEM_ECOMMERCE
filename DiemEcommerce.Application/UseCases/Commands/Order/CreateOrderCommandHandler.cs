@@ -10,91 +10,61 @@ using Matches = DiemEcommerce.Domain.Entities.Matches;
 
 namespace DiemEcommerce.Application.UseCases.Commands.Order;
 
-public class CreateOrderCommandHandler : ICommandHandler<Contract.Services.Order.Commands.CreateOrderCommand, Responses.OrderResponse>
+public class CreateOrderCommandHandler : ICommandHandler<Contract.Services.Order.Commands.CreateOrderCommand, Responses.CreateOrderResponse>
 {
     private readonly IRepositoryBase<ApplicationDbContext, Orders, Guid> _orderRepository;
     private readonly IRepositoryBase<ApplicationDbContext, OrderDetails, Guid> _orderDetailRepository;
     private readonly IRepositoryBase<ApplicationDbContext, Matches, Guid> _matchRepository;
-    private readonly IRepositoryBase<ApplicationDbContext, Users, Guid> _userRepository;
-    private readonly IRepositoryBase<ApplicationDbContext, Factories, Guid> _factoryRepository;
     private readonly IRepositoryBase<ApplicationDbContext, Customers, Guid> _customerRepository;
-    private readonly ITransactionService _transactionService;
+    private readonly IRepositoryBase<ApplicationDbContext, Transactions, Guid> _transactionRepository;
+    private readonly IRepositoryBase<ApplicationDbContext, Factories, Guid> _factoriesRepository;
 
     public CreateOrderCommandHandler(
         IRepositoryBase<ApplicationDbContext, Orders, Guid> orderRepository,
         IRepositoryBase<ApplicationDbContext, OrderDetails, Guid> orderDetailRepository,
         IRepositoryBase<ApplicationDbContext, Matches, Guid> matchRepository,
-        IRepositoryBase<ApplicationDbContext, Users, Guid> userRepository,
-        IRepositoryBase<ApplicationDbContext, Factories, Guid> factoryRepository,
-        IRepositoryBase<ApplicationDbContext, Customers, Guid> customerRepository,
-        ITransactionService transactionService)
+        IRepositoryBase<ApplicationDbContext, Customers, Guid> customerRepository, IRepositoryBase<ApplicationDbContext, Transactions, Guid> transactionRepository, IRepositoryBase<ApplicationDbContext, Factories, Guid> factoriesRepository)
     {
         _orderRepository = orderRepository;
         _orderDetailRepository = orderDetailRepository;
         _matchRepository = matchRepository;
-        _userRepository = userRepository;
-        _factoryRepository = factoryRepository;
         _customerRepository = customerRepository;
-        _transactionService = transactionService;
+        _transactionRepository = transactionRepository;
+        _factoriesRepository = factoriesRepository;
     }
 
-    public async Task<Result<Responses.OrderResponse>> Handle(Contract.Services.Order.Commands.CreateOrderCommand request, CancellationToken cancellationToken)
+    public async Task<Result<Responses.CreateOrderResponse>> Handle(Contract.Services.Order.Commands.CreateOrderCommand request, CancellationToken cancellationToken)
     {
         // Validate customer exists
-        var customer = await _customerRepository.FindByIdAsync(request.CustomerId, cancellationToken);
+        var customer = await _customerRepository
+            .FindByIdAsync(request.CustomerId, cancellationToken, x => x.Users);
+        
         if (customer == null)
         {
-            return Result.Failure<Responses.OrderResponse>(new Error("404", "Customer not found"));
+            return Result.Failure<Responses.CreateOrderResponse>(new Error("404", "Customer not found"));
         }
 
-        // Get customer user to handle transactions if using wallet balance
-        var customerUser = await _userRepository.FindAll(u => u.CustomersId == request.CustomerId)
-            .FirstOrDefaultAsync(cancellationToken);
+        var matchIds = request.OrderItems.Select(x => x.MatchId);
         
-        if (customerUser == null)
+        // Validate matches exist
+        var matches = await _matchRepository.FindAll(m => matchIds.Contains(m.Id))
+            .ToListAsync(cancellationToken);
+        
+        if (matches.Count != request.OrderItems.Count)
         {
-            return Result.Failure<Responses.OrderResponse>(new Error("404", "Customer user not found"));
+            return Result.Failure<Responses.CreateOrderResponse>(new Error("404", "Some matches not found"));
         }
+        
+        var totalPrice = request.OrderItems.Sum(x => x.Quantity * matches.First(m => m.Id == x.MatchId).Price);
 
-        // Group order items by factory
-        var orderItemsByFactory = new Dictionary<Guid, List<(Contract.Services.Order.Commands.OrderItemDto Item, Matches Match)>>();
-        decimal totalOrderPrice = 0;
-
-        // Validate all matches exist and calculate total price
-        foreach (var item in request.OrderItems)
+        if (!request.IsQR)
         {
-            var match = await _matchRepository.FindByIdAsync(item.MatchId, cancellationToken);
-            if (match == null || match.IsDeleted)
+            if(customer.Users.Balance < totalPrice)
             {
-                return Result.Failure<Responses.OrderResponse>(
-                    new Error("404", $"Match with ID {item.MatchId} not found"));
-            }
-
-            if (!orderItemsByFactory.ContainsKey(match.FactoriesId))
-            {
-                orderItemsByFactory[match.FactoriesId] = new List<(Contract.Services.Order.Commands.OrderItemDto, Matches)>();
-            }
-
-            orderItemsByFactory[match.FactoriesId].Add((item, match));
-            totalOrderPrice += item.Price * item.Quantity;
-        }
-
-        // If using wallet payment, check if customer has enough balance
-        if (request.PaymentMethod == "WalletBalance")
-        {
-            bool hasSufficientBalance = await _transactionService.HasSufficientBalanceAsync(
-                customerUser.Id, 
-                Convert.ToDouble(totalOrderPrice), 
-                cancellationToken);
-            
-            if (!hasSufficientBalance)
-            {
-                return Result.Failure<Responses.OrderResponse>(
-                    new Error("400", "Insufficient wallet balance"));
+                return Result.Failure<Responses.CreateOrderResponse>(new Error("400", "Insufficient balance"));
             }
         }
-
-        // Create an order
+        
         var order = new Orders
         {
             Id = Guid.NewGuid(),
@@ -102,108 +72,123 @@ public class CreateOrderCommandHandler : ICommandHandler<Contract.Services.Order
             Address = request.Address,
             Phone = request.Phone,
             Email = request.Email,
-            TotalPrice = totalOrderPrice,
-            PaymentMethod = request.PaymentMethod,
-            Status = 0 // Pending
+            Note = request.Note,
+            TotalPrice = totalPrice,
+            Status = request.IsQR ? "Pending" : "Success",
         };
-
+        
         _orderRepository.Add(order);
 
-        // Create order details
-        var orderDetails = new List<OrderDetails>();
-
-        foreach (var factoryGroup in orderItemsByFactory)
+        var orderDetail = request.OrderItems.Select(x => new OrderDetails()
         {
-            var factoryId = factoryGroup.Key;
-            var items = factoryGroup.Value;
+            Id = Guid.NewGuid(),
+            OrdersId = order.Id,
+            MatchesId = x.MatchId,
+            Quantity = x.Quantity,
+            Discount = 0,
+            Price = matches.First(m => m.Id == x.MatchId).Price,
+        });
+        
+        _orderDetailRepository.AddRange(orderDetail);
 
-            foreach (var (item, match) in items)
-            {
-                var orderDetail = new OrderDetails
-                {
-                    Id = Guid.NewGuid(),
-                    OrdersId = order.Id,
-                    MatchesId = item.MatchId,
-                    Quantity = item.Quantity,
-                    Price = item.Price,
-                    Discount = 0, // No discount by default
-                    TotalPrice = item.Price * item.Quantity
-                };
 
-                orderDetails.Add(orderDetail);
-            }
-        }
-
-        _orderDetailRepository.AddRange(orderDetails);
-
-        // If using wallet payment, create transactions
-        if (request.PaymentMethod == "WalletBalance")
+        var factoryMap = new Dictionary<Guid, decimal>();
+        
+        foreach (var match in matches)
         {
-            foreach (var factoryGroup in orderItemsByFactory)
+            if (!factoryMap.ContainsKey(match.FactoriesId))
             {
-                var factoryId = factoryGroup.Key;
-                var items = factoryGroup.Value;
-                var factoryTotal = items.Sum(i => i.Item.Price * i.Item.Quantity);
-                
-                // Get factory owner user
-                var factoryOwnerUser = await _factoryRepository.FindAll(u => u.Id == factoryId)
-                    .FirstOrDefaultAsync(cancellationToken);
-                
-                if (factoryOwnerUser == null)
-                {
-                    return Result.Failure<Responses.OrderResponse>(
-                        new Error("404", $"Factory owner not found for factory {factoryId}"));
-                }
-
-                // Create transaction from customer to factory
-                var transactionResult = await _transactionService.CreateTransactionAsync(
-                    customerUser.Id,
-                    factoryOwnerUser.Id,
-                    Convert.ToDouble(factoryTotal),
-                    $"Payment for order {order.Id}",
-                    order.Id,
-                    cancellationToken);
-                
-                if (transactionResult.IsFailure)
-                {
-                    return Result.Failure<Responses.OrderResponse>(transactionResult.Error);
-                }
+                factoryMap[match.FactoriesId] = 0;
             }
-
-            // Update order status to paid
-            order.Status = 1; // Paid
+            factoryMap[match.FactoriesId] += match.Price * request.OrderItems.First(x => x.MatchId == match.Id).Quantity;
         }
+        
+        var updateMatchQuan = matches.Select(x =>
+        {
+            var orderItem = request.OrderItems.FirstOrDefault(y => y.MatchId == x.Id);
+            if (orderItem != null)
+            {
+                x.Quantity -= orderItem.Quantity;
+            }
+            return x;
+        });
 
-        // Map response
-        var response = new Responses.OrderResponse
+        var currentUserBalance = customer.Users.Balance;
+
+        List<Transactions> trans;
+        
+        if (request.IsQR)
+        {
+            trans = factoryMap.Select(x => new Transactions()
+            {
+                Id = Guid.NewGuid(),
+                SenderId = customer.Id,
+                ReceiverId = x.Key,
+                CurrentBalance = currentUserBalance,
+                Amount = x.Value,
+                AfterBalance = currentUserBalance,
+                Description = $"Order {order.Id}",
+                OrdersId = order.Id,
+                TransactionType = "Transfer",
+                TransactionStatus = "Pending",
+                Method = "External",
+            }).ToList();
+        }
+        else
+        {
+            trans = factoryMap.Select(x => new Transactions()
+            {
+                Id = Guid.NewGuid(),
+                SenderId = customer.Id,
+                ReceiverId = x.Key,
+                CurrentBalance = currentUserBalance,
+                Amount = x.Value,
+                AfterBalance = currentUserBalance - x.Value,
+                Description = $"Order {order.Id}",
+                OrdersId = order.Id,
+                TransactionType = "Transfer",
+                TransactionStatus = "Success",
+                Method = "Internal",
+            }).ToList();
+            
+            var factory = await _factoriesRepository.FindAll(x => factoryMap.Keys.Contains(x.Id))
+                .Include(x => x.Users)
+                .ToListAsync(cancellationToken);
+            
+            factory = factory.Select(x =>
+            {
+                x.Users.Balance += factoryMap[x.Id];
+                return x;
+            }).ToList();
+            
+            _factoriesRepository.UpdateRange(factory);
+        }
+        
+        customer.Users.Balance -= totalPrice;
+        _transactionRepository.AddRange(trans);
+        _matchRepository.UpdateRange(updateMatchQuan);
+        
+        var urlSea = $"https://qr.sepay.vn/img?bank=MBBank&acc=0901928382&template=&amount={totalPrice}&des=DiemOrder{order.Id}";
+
+        var response = new Responses.CreateOrderResponse()
         {
             Id = order.Id,
             CustomerId = order.CustomersId,
-            CustomerName = $"{customerUser.FirstName} {customerUser.LastName}",
+            CustomerName = $"{customer.Users.FirstName} {customer.Users.LastName}",
             Address = order.Address,
             Phone = order.Phone,
             Email = order.Email,
             TotalPrice = order.TotalPrice,
-            PaymentMethod = order.PaymentMethod,
             Status = order.Status,
-            StatusText = GetOrderStatusText(order.Status),
+            QrUrl = !request.IsQR ? "" : urlSea,
+            SystemBankName = !request.IsQR ? "" : "MB Bank",
+            SystemBankAccount = !request.IsQR ? "" : "0901928382",
+            SystemBankDescription = !request.IsQR ? "" : $"DiemOrder{order.Id}",
             CreatedOnUtc = order.CreatedOnUtc
         };
-
+        
         return Result.Success(response);
     }
-    
-    private string GetOrderStatusText(int status)
-    {
-        return status switch
-        {
-            0 => "Pending",
-            1 => "Paid",
-            2 => "Processing",
-            3 => "Shipped",
-            4 => "Delivered",
-            5 => "Cancelled",
-            _ => "Unknown"
-        };
-    }
+
+
 }

@@ -78,9 +78,8 @@ public class GetOrderByIdQueryHandler : IQueryHandler<Contract.Services.Order.Qu
             Phone = order.Phone,
             Email = order.Email,
             TotalPrice = order.TotalPrice,
-            PaymentMethod = order.PaymentMethod,
-            Status = order.Status,
-            StatusText = GetOrderStatusText(order.Status),
+            PaymentMethod = "order.PaymentMethod",
+            StatusText = "GetOrderStatusText(order.Status)",
             CreatedOnUtc = order.CreatedOnUtc,
             OrderItems = new List<Responses.OrderItemResponse>()
         };

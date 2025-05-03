@@ -70,10 +70,10 @@ public class GetFactoryOrdersQueryHandler : IQueryHandler<Contract.Services.Orde
         var query = _orderRepository.FindAll(o => orderIds.Contains(o.Id) && !o.IsDeleted);
 
         // Apply status filter if provided
-        if (request.Status.HasValue)
-        {
-            query = query.Where(o => o.Status == request.Status.Value);
-        }
+        // if (request.Status.HasValue)
+        // {
+        //     query = query.Where(o => o.Status == request.Status.Value);
+        // }
 
         // Order by creation date (newest first)
         query = query.OrderByDescending(o => o.CreatedOnUtc);

@@ -10,9 +10,6 @@ public class CreateOrderCommandValidator : AbstractValidator<Commands.CreateOrde
         RuleFor(x => x.CustomerId)
             .NotEmpty().WithMessage("Customer ID is required.");
             
-        RuleFor(x => x.PaymentMethod)
-            .NotEmpty().WithMessage("Payment method is required.");
-            
         RuleFor(x => x.OrderItems)
             .NotEmpty().WithMessage("Order must contain at least one item.");
             
@@ -23,15 +20,7 @@ public class CreateOrderCommandValidator : AbstractValidator<Commands.CreateOrde
                 
             item.RuleFor(x => x.Quantity)
                 .GreaterThan(0).WithMessage("Quantity must be greater than zero.");
-                
-            item.RuleFor(x => x.Price)
-                .GreaterThan(0).WithMessage("Price must be greater than zero.");
-        });
-        
-        When(x => x.PaymentMethod == "WalletBalance", () =>
-        {
-            RuleFor(x => x.CustomerId)
-                .NotEmpty().WithMessage("Customer ID is required for wallet payments.");
+            
         });
     }
 }

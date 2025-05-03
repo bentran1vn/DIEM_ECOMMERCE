@@ -13,16 +13,14 @@ public class CreateMatchCommandHandler : ICommandHandler<Contract.Services.Match
     private readonly IRepositoryBase<ApplicationDbContext, Matches, Guid> _matchRepository;
     private readonly IRepositoryBase<ApplicationDbContext, Categories, Guid> _categoryRepository;
     private readonly IRepositoryBase<ApplicationDbContext, Factories, Guid> _factoryRepository;
-    private readonly IRepositoryBase<ApplicationDbContext, MatchMedias, Guid> _matchMediasRepository;
     private readonly IMediaService _mediaService;
 
-    public CreateMatchCommandHandler(IRepositoryBase<ApplicationDbContext, Matches, Guid> matchRepository, IRepositoryBase<ApplicationDbContext, Categories, Guid> categoryRepository, IRepositoryBase<ApplicationDbContext, Factories, Guid> factoryRepository, IMediaService mediaService, IRepositoryBase<ApplicationDbContext, MatchMedias, Guid> matchMediasRepository)
+    public CreateMatchCommandHandler(IRepositoryBase<ApplicationDbContext, Matches, Guid> matchRepository, IRepositoryBase<ApplicationDbContext, Categories, Guid> categoryRepository, IRepositoryBase<ApplicationDbContext, Factories, Guid> factoryRepository, IMediaService mediaService)
     {
         _matchRepository = matchRepository;
         _categoryRepository = categoryRepository;
         _factoryRepository = factoryRepository;
         _mediaService = mediaService;
-        _matchMediasRepository = matchMediasRepository;
     }
 
     public async Task<Result> Handle(Contract.Services.Match.Commands.CreateMatchCommand request, CancellationToken cancellationToken)
@@ -76,6 +74,8 @@ public class CreateMatchCommandHandler : ICommandHandler<Contract.Services.Match
         {
             Id = Guid.NewGuid(),
             Name = request.Name.Trim(),
+            Price = request.Price,
+            Quantity = request.Quantity,
             Description = request.Description.Trim(),
             FactoriesId = request.FactoryId,
             CategoriesId = request.CategoryId,

@@ -9,13 +9,12 @@ public class Orders: Entity<Guid>, IAuditableEntity
     public string? Phone { get; set; }
     public string? Email { get; set; }
     public decimal TotalPrice { get; set; }
-    public string PaymentMethod { get; set; } = default!;
-    public int Status { get; set; }
-    
     public Guid CustomersId { get; set; }
+    public string Status { get; set; } = default!;
+    // Success, Pending, Failed
     public virtual Customers Customers { get; set; } = default!;
     public virtual ICollection<OrderDetails> OrderDetails { get; set; } = new List<OrderDetails>();
-    public virtual Transactions Transactions { get; set; } = default!;
+    public virtual ICollection<Transactions> Transactions { get; set; } = new List<Transactions>();
     public DateTimeOffset CreatedOnUtc { get; set; }
     public DateTimeOffset? ModifiedOnUtc { get; set; }
 }
