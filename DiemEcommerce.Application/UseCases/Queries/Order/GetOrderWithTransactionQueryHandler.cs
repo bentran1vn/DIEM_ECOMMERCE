@@ -98,8 +98,8 @@ public class GetOrderWithTransactionQueryHandler : IQueryHandler<Contract.Servic
             Phone = order.Phone,
             Email = order.Email,
             TotalPrice = order.TotalPrice,
-            PaymentMethod = "order.PaymentMethod",
-            StatusText = "GetOrderStatusText(order.Status)",
+            PaymentMethod = order.PayMethod,
+            Status = order.Status,
             CreatedOnUtc = order.CreatedOnUtc,
             OrderItems = new List<Responses.OrderItemResponse>(),
             Transactions = new List<Responses.TransactionResponse>()
@@ -183,18 +183,5 @@ public class GetOrderWithTransactionQueryHandler : IQueryHandler<Contract.Servic
 
         return Result.Success(response);
     }
-    
-    private string GetOrderStatusText(int status)
-    {
-        return status switch
-        {
-            0 => "Pending",
-            1 => "Paid",
-            2 => "Processing",
-            3 => "Shipped",
-            4 => "Delivered",
-            5 => "Cancelled",
-            _ => "Unknown"
-        };
-    }
+
 }

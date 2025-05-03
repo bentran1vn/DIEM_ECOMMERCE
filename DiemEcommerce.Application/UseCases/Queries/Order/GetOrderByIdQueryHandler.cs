@@ -78,8 +78,8 @@ public class GetOrderByIdQueryHandler : IQueryHandler<Contract.Services.Order.Qu
             Phone = order.Phone,
             Email = order.Email,
             TotalPrice = order.TotalPrice,
-            PaymentMethod = "order.PaymentMethod",
-            StatusText = "GetOrderStatusText(order.Status)",
+            PaymentMethod = order.PayMethod,
+            Status = order.Status,
             CreatedOnUtc = order.CreatedOnUtc,
             OrderItems = new List<Responses.OrderItemResponse>()
         };
@@ -127,19 +127,5 @@ public class GetOrderByIdQueryHandler : IQueryHandler<Contract.Services.Order.Qu
         }
 
         return Result.Success(response);
-    }
-    
-    private string GetOrderStatusText(int status)
-    {
-        return status switch
-        {
-            0 => "Pending",
-            1 => "Paid", 
-            2 => "Processing",
-            3 => "Shipped",
-            4 => "Delivered",
-            5 => "Cancelled",
-            _ => "Unknown"
-        };
     }
 }

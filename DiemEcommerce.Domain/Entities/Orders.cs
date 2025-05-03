@@ -11,6 +11,7 @@ public class Orders: Entity<Guid>, IAuditableEntity
     public decimal TotalPrice { get; set; }
     public Guid CustomersId { get; set; }
     public string Status { get; set; } = default!;
+    public string PayMethod { get; set; } = default!;
     // Success, Pending, Failed
     public bool IsFeedback { get; set; } = false;
     public virtual Customers Customers { get; set; } = default!;

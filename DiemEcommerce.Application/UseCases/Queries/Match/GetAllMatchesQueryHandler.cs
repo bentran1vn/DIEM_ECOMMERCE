@@ -22,9 +22,9 @@ public class GetAllMatchesQueryHandler : IQueryHandler<Contract.Services.Match.Q
         var query = _matchRepository.FindAll(m => !m.IsDeleted);
 
         // Apply category filter if provided
-        if (request.CategoryId.HasValue)
+        if (request.CategoryId != null && request.CategoryId.Any())
         {
-            query = query.Where(m => m.CategoriesId == request.CategoryId.Value);
+            query = query.Where(m => request.CategoryId.Contains(m.CategoriesId));
         }
 
         // Apply search term filter if provided

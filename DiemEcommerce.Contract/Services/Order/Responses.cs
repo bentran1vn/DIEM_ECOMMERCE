@@ -13,8 +13,7 @@ public static class Responses
         public string? Email { get; set; }
         public decimal TotalPrice { get; set; }
         public string PaymentMethod { get; set; }
-        public int Status { get; set; }
-        public string StatusText { get; set; }
+        public string Status { get; set; }
         public DateTimeOffset CreatedOnUtc { get; set; }
     }
     

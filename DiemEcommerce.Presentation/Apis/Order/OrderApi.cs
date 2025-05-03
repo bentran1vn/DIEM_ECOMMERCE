@@ -19,23 +19,23 @@ public class OrderApi : ApiEndpoint, ICarterModule
     {
         var group1 = app.NewVersionedApi("Orders")
             .MapGroup(BaseUrl).HasApiVersion(1)
-            .RequireAuthorization(); // All order endpoints require authentication
-        
-        // GET endpoints
-        group1.MapGet("", GetCustomerOrdersV1)
-            .RequireAuthorization(RoleNames.Customer);
-        
-        group1.MapGet("factory", GetFactoryOrdersV1);
-        
-        group1.MapGet("{id}", GetOrderByIdV1);
-        
-        group1.MapGet("{id}/transactions", GetOrderWithTransactionsV1);
+            .RequireAuthorization();
         
         // POST endpoints
         group1.MapPost("", CreateOrderV1)
             .RequireAuthorization(RoleNames.Customer);
         
-        group1.MapPost("sepay-payment", SePayCallBack);
+        group1.MapPost("sepay-payment", SePayCallBack)
+            .AllowAnonymous();
+        
+        // GET endpoint that handles all orders based on role
+        group1.MapGet("", GetOrdersV1);
+        
+        // GET orders by ID - accessible by all authenticated users but with role-based authorization
+        group1.MapGet("{id}", GetOrderByIdV1);
+        
+        // GET orders with transactions - accessible by admin and factory
+        group1.MapGet("{id}/transactions", GetOrderWithTransactionsV1);
         
         // PUT endpoints
         group1.MapPut("{id}/status", UpdateOrderStatusV1);
@@ -44,52 +44,64 @@ public class OrderApi : ApiEndpoint, ICarterModule
         group1.MapDelete("{id}", CancelOrderV1);
     }
     
-    public static async Task<IResult> GetCustomerOrdersV1(ISender sender, HttpContext context, 
-        int pageIndex = 1, int pageSize = 10, int? status = null)
+    public static async Task<IResult> GetOrdersV1(ISender sender, HttpContext context, 
+        int pageIndex = 1, int pageSize = 10, string? status = null)
     {
-        var customerId = context.User.FindFirst("CustomerId")?.Value;
+        var isAdmin = context.User.IsInRole(RoleNames.Admin);
+        var isFactory = context.User.IsInRole(RoleNames.Factory);
+        var isCustomer = context.User.IsInRole(RoleNames.Customer);
         
-        if (string.IsNullOrEmpty(customerId) || !Guid.TryParse(customerId, out var customerGuid))
+        if (isAdmin)
         {
-            return Results.BadRequest("Invalid or missing customer ID");
+            // Admin can see all orders - implement admin-specific query handler
+            var result = await sender.Send(new Queries.GetAllOrdersQuery(
+                pageIndex,
+                pageSize,
+                status));
+                
+            if (result.IsFailure)
+                return HandlerFailure(result);
+                
+            return Results.Ok(result.Value);
         }
-
-        var result = await sender.Send(new Queries.GetCustomerOrdersQuery(
-            customerGuid,
-            pageIndex,
-            pageSize,
-            status));
+        else if (isFactory)
+        {
+            var factoryId = context.User.FindFirst("FactoryId")?.Value;
+            
+            if (string.IsNullOrEmpty(factoryId) || !Guid.TryParse(factoryId, out var factoryGuid))
+                return Results.BadRequest("Invalid or missing factory ID");
+                
+            var result = await sender.Send(new Queries.GetFactoryOrdersQuery(
+                factoryGuid,
+                pageIndex,
+                pageSize,
+                status));
+                
+            if (result.IsFailure)
+                return HandlerFailure(result);
+                
+            return Results.Ok(result.Value);
+        }
+        else if (isCustomer)
+        {
+            var customerId = context.User.FindFirst("CustomerId")?.Value;
+            
+            if (string.IsNullOrEmpty(customerId) || !Guid.TryParse(customerId, out var customerGuid))
+                return Results.BadRequest("Invalid or missing customer ID");
+                
+            var result = await sender.Send(new Queries.GetCustomerOrdersQuery(
+                customerGuid,
+                pageIndex,
+                pageSize,
+                status));
+                
+            if (result.IsFailure)
+                return HandlerFailure(result);
+                
+            return Results.Ok(result.Value);
+        }
         
-        if (result.IsFailure)
-        {
-            return HandlerFailure(result);
-        }
-
-        return Results.Ok(result.Value);
-    }
-    
-    public static async Task<IResult> GetFactoryOrdersV1(ISender sender, HttpContext context, 
-        int pageIndex = 1, int pageSize = 10, int? status = null)
-    {
-        var factoryId = context.User.FindFirst("FactoryId")?.Value;
-        
-        if (string.IsNullOrEmpty(factoryId) || !Guid.TryParse(factoryId, out var factoryGuid))
-        {
-            return Results.BadRequest("Invalid or missing factory ID");
-        }
-
-        var result = await sender.Send(new Queries.GetFactoryOrdersQuery(
-            factoryGuid,
-            pageIndex,
-            pageSize,
-            status));
-        
-        if (result.IsFailure)
-        {
-            return HandlerFailure(result);
-        }
-
-        return Results.Ok(result.Value);
+        return Results.Forbid();
     }
     
     public static async Task<IResult> GetOrderByIdV1(ISender sender, HttpContext context, Guid id)
@@ -97,31 +109,27 @@ public class OrderApi : ApiEndpoint, ICarterModule
         var result = await sender.Send(new Queries.GetOrderByIdQuery(id));
         
         if (result.IsFailure)
-        {
             return HandlerFailure(result);
-        }
 
         // Verify the user has access to the order
-        var customerId = context.User.FindFirst("CustomerId")?.Value;
-        var factoryId = context.User.FindFirst("FactoryId")?.Value;
-        var isAdmin = context.User.IsInRole("Admin");
+        var isAdmin = context.User.IsInRole(RoleNames.Admin);
         
         if (!isAdmin)
         {
+            var customerId = context.User.FindFirst("CustomerId")?.Value;
+            var factoryId = context.User.FindFirst("FactoryId")?.Value;
+            
             if (customerId != null && Guid.TryParse(customerId, out var customerGuid))
             {
                 if (result.Value.CustomerId != customerGuid)
-                {
                     return Results.Forbid();
-                }
             }
             else if (factoryId != null && Guid.TryParse(factoryId, out var factoryGuid))
             {
+                // Check if any order items belong to this factory
                 var hasFactoryItems = result.Value.OrderItems.Any(oi => oi.FactoryId == factoryGuid);
                 if (!hasFactoryItems)
-                {
                     return Results.Forbid();
-                }
             }
             else
             {
@@ -134,34 +142,37 @@ public class OrderApi : ApiEndpoint, ICarterModule
     
     public static async Task<IResult> GetOrderWithTransactionsV1(ISender sender, HttpContext context, Guid id)
     {
+        // Only Admin and Factory roles can access transaction details
+        var isAdmin = context.User.IsInRole(RoleNames.Admin);
+        var isFactory = context.User.IsInRole(RoleNames.Factory);
+        
+        if (!isAdmin && !isFactory)
+            return Results.Forbid();
+            
         var result = await sender.Send(new Queries.GetOrderWithTransactionQuery(id));
         
         if (result.IsFailure)
-        {
             return HandlerFailure(result);
-        }
 
-        // Verify the user has access to the order
-        var customerId = context.User.FindFirst("CustomerId")?.Value;
-        var factoryId = context.User.FindFirst("FactoryId")?.Value;
-        var isAdmin = context.User.IsInRole("Admin");
-        
-        if (!isAdmin)
+        // Factory can only see transactions for their own items
+        if (!isAdmin && isFactory)
         {
-            if (customerId != null && Guid.TryParse(customerId, out var customerGuid))
+            var factoryId = context.User.FindFirst("FactoryId")?.Value;
+            
+            if (factoryId != null && Guid.TryParse(factoryId, out var factoryGuid))
             {
-                if (result.Value.CustomerId != customerGuid)
-                {
-                    return Results.Forbid();
-                }
-            }
-            else if (factoryId != null && Guid.TryParse(factoryId, out var factoryGuid))
-            {
+                // Filter transactions to only show factory's relevant transactions
                 var hasFactoryItems = result.Value.OrderItems.Any(oi => oi.FactoryId == factoryGuid);
+                
                 if (!hasFactoryItems)
-                {
                     return Results.Forbid();
-                }
+                    
+                // Optionally filter transactions to only show ones relevant to this factory
+                var factoryTransactions = result.Value.Transactions
+                    .Where(t => t.SenderId == factoryGuid || t.ReceiverId == factoryGuid)
+                    .ToList();
+                    
+                result.Value.Transactions = factoryTransactions;
             }
             else
             {
