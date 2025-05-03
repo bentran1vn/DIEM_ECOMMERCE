@@ -32,16 +32,25 @@ public class MatchApi: ApiEndpoint, ICarterModule
     }
     
     public static async Task<IResult> GetMatchesV1(ISender sender, int pageIndex = 1, int pageSize = 10,
-        string? searchTerm = null, Guid? categoryId = null)
+        string? searchTerm = null, Guid[]? categoryIds = null)
     {
-        var result = await sender.Send(new Queries.GetAllMatchQuery(categoryId, searchTerm, pageIndex, pageSize));
+        var result = await sender.Send(new Queries.GetAllMatchQuery(categoryIds?.ToList(), searchTerm, pageIndex, pageSize));
         
         if (result.IsFailure)
             return HandlerFailure(result);
 
         return Results.Ok(result);
     }
+
+    public class GetMatchRequest
+    {
+        public int pageIndex { get; set; } = 1;
+        public int pageSize { get; set; } = 10;
+        public string? searchTerm { get; set; } = null;
+        public List<Guid>? categoryIds { get; set; } = null;
+    }
     
+
     public static async Task<IResult> GetMatchesByIdV1(ISender sender, Guid id)
     {
         var result = await sender.Send(new Queries.GetMatchByIdQuery(id));

@@ -76,6 +76,7 @@ public class CreateOrderCommandHandler : ICommandHandler<Contract.Services.Order
             TotalPrice = totalPrice,
             IsFeedback = false,
             Status = request.IsQR ? "Pending" : "Success",
+            PayMethod = request.IsQR ? "External" : "Internal",
         };
         
         _orderRepository.Add(order);

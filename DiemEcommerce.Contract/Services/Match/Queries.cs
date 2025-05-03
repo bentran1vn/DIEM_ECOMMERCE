@@ -5,7 +5,7 @@ namespace DiemEcommerce.Contract.Services.Match;
 
 public class Queries
 {
-    public record GetAllMatchQuery(Guid? CategoryId, string? SearchTerm, int PageIndex, int PageSize)
+    public record GetAllMatchQuery(List<Guid>? CategoryId, string? SearchTerm, int PageIndex, int PageSize)
         : IQuery<PagedResult<Responses.MatchResponse>>;
 
     public record GetMatchByIdQuery(Guid Id) : IQuery<Responses.MatchDetailResponse>;
