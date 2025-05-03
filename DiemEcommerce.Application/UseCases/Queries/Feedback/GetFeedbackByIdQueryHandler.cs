@@ -40,8 +40,8 @@ public class GetFeedbackByIdQueryHandler : IQueryHandler<Contract.Services.Feedb
 
         // Get order detail with product information
         var orderDetail = await _orderDetailRepository.FindAll(
-                od => od.Id == feedback.OrderDetailId,
-                od => od.Match)
+                od => od.Id == feedback.OrderDetailsId,
+                od => od.Matches)
             .FirstOrDefaultAsync(cancellationToken);
 
         if (orderDetail == null)
@@ -50,7 +50,7 @@ public class GetFeedbackByIdQueryHandler : IQueryHandler<Contract.Services.Feedb
         }
 
         // Get customer information
-        var customer = await _userRepository.FindByIdAsync(feedback.CustomerId, cancellationToken);
+        var customer = await _userRepository.FindByIdAsync(feedback.CustomersId, cancellationToken);
         
         if (customer == null)
         {
@@ -63,16 +63,16 @@ public class GetFeedbackByIdQueryHandler : IQueryHandler<Contract.Services.Feedb
         }
 
         // Get product image if available
-        var productImage = orderDetail.Match.CoverImages.FirstOrDefault()?.Url ?? "";
+        var productImage = orderDetail.Matches.CoverImages.FirstOrDefault()?.Url ?? "";
 
         // Create feedback response
         var response = new Responses.FeedbackResponse
         {
             Id = feedback.Id,
-            OrderDetailId = feedback.OrderDetailId,
-            ProductName = orderDetail.Match.Name,
+            OrderDetailId = feedback.OrderDetailsId,
+            ProductName = orderDetail.Matches.Name,
             ProductImage = productImage,
-            CustomerId = feedback.CustomerId,
+            CustomerId = feedback.CustomersId,
             CustomerName = $"{customer.FirstName} {customer.LastName}",
             Rating = feedback.Rating,
             Comment = feedback.Comment,

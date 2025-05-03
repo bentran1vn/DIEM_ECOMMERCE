@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations.Schema;
 using DiemEcommerce.Domain.Abstractions.Entities;
 
 namespace DiemEcommerce.Domain.Entities;
@@ -15,10 +16,9 @@ public class Users : Entity<Guid>, IAuditableEntity
     public Guid RolesId { get; set; }
     public virtual Roles Roles { get; set; } = default!;
     
-    public Guid? FactoryId { get; set; }
+    public Guid? FactoriesId { get; set; }
     public virtual Factories? Factories { get; set; }
-   
-    public Guid? CustomerId { get; set; }
+    public Guid? CustomersId { get; set; }
     public virtual Customers? Customers { get; set; }
     
     public DateTimeOffset CreatedOnUtc { get; set; }

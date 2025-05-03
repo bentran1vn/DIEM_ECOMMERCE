@@ -9,13 +9,13 @@ public class OrderDetails: Entity<Guid>, IAuditableEntity
     public decimal Discount { get; set; }
     public decimal TotalPrice { get; set; }
     
-    public Guid OrderId { get; set; }
-    public virtual Orders Order { get; set; } = default!;
+    public Guid OrdersId { get; set; }
+    public virtual Orders Orders { get; set; } = default!;
     
-    public Guid MatchId { get; set; }
-    public virtual Matches Match { get; set; } = default!;
+    public Guid MatchesId { get; set; }
+    public virtual Matches Matches { get; set; } = default!;
     
-    public Guid? FeedbackId { get; set; }
+    public virtual Feedbacks Feedbacks { get; set; }
     
     public DateTimeOffset CreatedOnUtc { get; set; }
     public DateTimeOffset? ModifiedOnUtc { get; set; }

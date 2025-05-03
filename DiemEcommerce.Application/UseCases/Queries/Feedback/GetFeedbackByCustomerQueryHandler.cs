@@ -32,7 +32,7 @@ public class GetFeedbackByCustomerQueryHandler : IQueryHandler<Contract.Services
     {
         // Get customer for response
         var customer = await _userRepository.FindAll(
-                u => u.CustomerId == request.CustomerId)
+                u => u.CustomersId == request.CustomerId)
             .FirstOrDefaultAsync(cancellationToken);
 
         if (customer == null)
@@ -42,7 +42,7 @@ public class GetFeedbackByCustomerQueryHandler : IQueryHandler<Contract.Services
 
         // Get all feedback from this customer
         var feedbackQuery = _feedbackRepository.FindAll(
-                f => f.CustomerId == request.CustomerId && !f.IsDeleted)
+                f => f.CustomersId == request.CustomerId && !f.IsDeleted)
             .Include(f => f.Images)
             .OrderByDescending(f => f.CreatedOnUtc);
 
@@ -65,19 +65,19 @@ public class GetFeedbackByCustomerQueryHandler : IQueryHandler<Contract.Services
 
         // Get all order detail IDs to load product information
         var orderDetailIds = pagedFeedbacks.Items
-            .Select(f => f.OrderDetailId)
+            .Select(f => f.OrderDetailsId)
             .Distinct()
             .ToList();
 
         // Get order details with products
         var orderDetails = await _orderDetailRepository.FindAll(
                 od => orderDetailIds.Contains(od.Id),
-                od => od.Match)
+                od => od.Matches)
             .ToDictionaryAsync(od => od.Id, od => od, cancellationToken);
 
         // Extract match IDs
         var matchIds = orderDetails.Values
-            .Select(od => od.MatchId)
+            .Select(od => od.MatchesId)
             .Distinct()
             .ToList();
 
@@ -91,7 +91,7 @@ public class GetFeedbackByCustomerQueryHandler : IQueryHandler<Contract.Services
         var feedbackResponses = pagedFeedbacks.Items.Select(feedback =>
         {
             // Get order detail for this feedback
-            var orderDetail = orderDetails.GetValueOrDefault(feedback.OrderDetailId);
+            var orderDetail = orderDetails.GetValueOrDefault(feedback.OrderDetailsId);
             if (orderDetail == null)
             {
                 // Skip if order detail not found
@@ -99,7 +99,7 @@ public class GetFeedbackByCustomerQueryHandler : IQueryHandler<Contract.Services
             }
 
             // Get match for this order detail
-            var match = matches.GetValueOrDefault(orderDetail.MatchId);
+            var match = matches.GetValueOrDefault(orderDetail.MatchesId);
             if (match == null)
             {
                 // Skip if match not found
@@ -109,10 +109,10 @@ public class GetFeedbackByCustomerQueryHandler : IQueryHandler<Contract.Services
             return new Responses.FeedbackResponse
             {
                 Id = feedback.Id,
-                OrderDetailId = feedback.OrderDetailId,
+                OrderDetailId = feedback.OrderDetailsId,
                 ProductName = match.Name,
                 ProductImage = match.CoverImages.FirstOrDefault()?.Url ?? "",
-                CustomerId = feedback.CustomerId,
+                CustomerId = feedback.CustomersId,
                 CustomerName = $"{customer.FirstName} {customer.LastName}",
                 Rating = feedback.Rating,
                 Comment = feedback.Comment,

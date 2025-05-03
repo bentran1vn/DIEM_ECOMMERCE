@@ -1,4 +1,5 @@
 using Carter;
+using DiemEcommerce.Contract.Constant.SystemRoles;
 using DiemEcommerce.Contract.Services.Order;
 using DiemEcommerce.Presentation.Abstractions;
 using MediatR;
@@ -26,7 +27,8 @@ public class OrderApi : ApiEndpoint, ICarterModule
         group1.MapGet("{id}/transactions", GetOrderWithTransactionsV1);
         
         // POST endpoints
-        group1.MapPost("", CreateOrderV1);
+        group1.MapPost("", CreateOrderV1)
+            .RequireAuthorization(RoleNames.Customer);
         
         // PUT endpoints
         group1.MapPut("{id}/status", UpdateOrderStatusV1);

@@ -15,7 +15,8 @@ public class Factories : Entity<Guid>, IAuditableEntity
     public string BankAccount { get; set; }
     public string BankName { get; set; }
     
-    public Guid UserId { get; set; }
+    public virtual Users Users { get; set; } = null!;
+    
     public virtual ICollection<Matches> Matches { get; set; } = new List<Matches>();
     
     public DateTimeOffset CreatedOnUtc { get; set; }

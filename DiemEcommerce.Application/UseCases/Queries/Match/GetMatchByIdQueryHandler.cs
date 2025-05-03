@@ -40,9 +40,9 @@ public class GetMatchByIdQueryHandler : IQueryHandler<Contract.Services.Match.Qu
                 Id = x.Id,
                 Url = x.Url
             }),
-            CategoryId = match.CategoryId,
+            CategoryId = match.CategoriesId,
             CategoryName = match.Categories.Name,
-            FactoryId = match.FactoryId,
+            FactoryId = match.FactoriesId,
             FactoryName = match.Factories.Name,
             FactoryAddress = match.Factories.Address,
             FactoryPhoneNumber = match.Factories.PhoneNumber,

@@ -12,8 +12,8 @@ public class Orders: Entity<Guid>, IAuditableEntity
     public string PaymentMethod { get; set; } = default!;
     public int Status { get; set; }
     
-    public Guid CustomerId { get; set; }
-    public virtual Customers Customer { get; set; } = default!;
+    public Guid CustomersId { get; set; }
+    public virtual Customers Customers { get; set; } = default!;
     
     public DateTimeOffset CreatedOnUtc { get; set; }
     public DateTimeOffset? ModifiedOnUtc { get; set; }

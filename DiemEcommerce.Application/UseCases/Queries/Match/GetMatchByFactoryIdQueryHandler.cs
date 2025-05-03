@@ -30,7 +30,7 @@ public class GetMatchByFactoryIdQueryHandler: IQueryHandler<Contract.Services.Ma
 
         // Get matches by factory id
         var query = _matchRepository.FindAll(
-                m => m.FactoryId == request.Id && !m.IsDeleted,
+                m => m.FactoriesId == request.Id && !m.IsDeleted,
                 m => m.Categories)
             .Include(m => m.Factories);
 
@@ -44,9 +44,9 @@ public class GetMatchByFactoryIdQueryHandler: IQueryHandler<Contract.Services.Ma
                 Id = x.Id,
                 Url = x.Url
             }),
-            CategoryId = m.CategoryId,
+            CategoryId = m.CategoriesId,
             CategoryName = m.Categories.Name,
-            FactoryId = m.FactoryId,
+            FactoryId = m.FactoriesId,
             FactoryName = m.Factories.Name,
             FactoryAddress = m.Factories.Address,
             FactoryPhoneNumber = m.Factories.PhoneNumber

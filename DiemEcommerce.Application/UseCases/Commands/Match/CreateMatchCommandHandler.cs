@@ -44,7 +44,7 @@ public class CreateMatchCommandHandler : ICommandHandler<Contract.Services.Match
         // Check if match with same name already exists for this factory
         var existingMatch = await _matchRepository.FindAll(
                 m => m.Name.ToLower() == request.Name.Trim().ToLower() && 
-                     m.FactoryId == request.FactoryId && 
+                     m.FactoriesId == request.FactoryId && 
                      !m.IsDeleted)
             .FirstOrDefaultAsync(cancellationToken);
 
@@ -77,21 +77,21 @@ public class CreateMatchCommandHandler : ICommandHandler<Contract.Services.Match
             Id = Guid.NewGuid(),
             Name = request.Name.Trim(),
             Description = request.Description.Trim(),
-            FactoryId = request.FactoryId,
-            CategoryId = request.CategoryId
+            FactoriesId = request.FactoryId,
+            CategoriesId = request.CategoryId,
         };
-
-        _matchRepository.Add(match);
 
         var medias = coverImageUrls.Select(x => new MatchMedias
         {
             Id = Guid.NewGuid(),
-            MatchId = match.Id,
+            MatchesId = match.Id,
             Url = x,
         });
         
-        _matchMediasRepository.AddRange(medias);
-
+        match.CoverImages = medias.ToList();
+        
+        _matchRepository.Add(match);
+        
         return Result.Success("Match created successfully");
     }
 }

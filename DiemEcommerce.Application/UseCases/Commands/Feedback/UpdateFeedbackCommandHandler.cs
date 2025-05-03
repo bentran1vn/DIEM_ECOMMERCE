@@ -35,8 +35,8 @@ public class UpdateFeedbackCommandHandler : ICommandHandler<Contract.Services.Fe
     {
         // Validate feedback exists and belongs to the customer
         var feedback = await _feedbackRepository.FindAll(
-                f => f.Id == request.FeedbackId && f.CustomerId == request.CustomerId && !f.IsDeleted,
-                f => f.OrderDetail,
+                f => f.Id == request.FeedbackId && f.CustomersId == request.CustomerId && !f.IsDeleted,
+                f => f.OrderDetails,
                 f => f.Images)
             .FirstOrDefaultAsync(cancellationToken);
 
@@ -52,7 +52,7 @@ public class UpdateFeedbackCommandHandler : ICommandHandler<Contract.Services.Fe
         }
 
         // Get order detail and product info for response
-        var orderDetail = feedback.OrderDetail;
+        var orderDetail = feedback.OrderDetails;
         if (orderDetail == null)
         {
             return Result.Failure<Responses.FeedbackResponse>(new Error("404", "Related order detail not found"));
@@ -60,9 +60,9 @@ public class UpdateFeedbackCommandHandler : ICommandHandler<Contract.Services.Fe
 
         // Load match information
         var match = await _orderDetailRepository.FindAll(
-                od => od.Id == feedback.OrderDetailId,
-                od => od.Match)
-            .Select(od => od.Match)
+                od => od.Id == feedback.OrderDetailsId,
+                od => od.Matches)
+            .Select(od => od.Matches)
             .FirstOrDefaultAsync(cancellationToken);
 
         if (match == null)
@@ -74,7 +74,7 @@ public class UpdateFeedbackCommandHandler : ICommandHandler<Contract.Services.Fe
         if (request.DeleteImages != null && request.DeleteImages.Any())
         {
             var mediaToDelete = await _feedbackMediaRepository
-                .FindAll(m => m.FeedbackId == feedback.Id && request.DeleteImages.Contains(m.Id))
+                .FindAll(m => m.FeedbacksId == feedback.Id && request.DeleteImages.Contains(m.Id))
                 .ToListAsync(cancellationToken);
 
             if (mediaToDelete.Any())
@@ -99,7 +99,7 @@ public class UpdateFeedbackCommandHandler : ICommandHandler<Contract.Services.Fe
                         var media = new FeedbackMedias
                         {
                             Id = Guid.NewGuid(),
-                            FeedbackId = feedback.Id,
+                            FeedbacksId = feedback.Id,
                             Url = imageUrl
                         };
 
@@ -124,7 +124,7 @@ public class UpdateFeedbackCommandHandler : ICommandHandler<Contract.Services.Fe
         feedback.Comment = request.Comment;
 
         // Get customer for response
-        var customer = await _userRepository.FindByIdAsync(feedback.CustomerId, cancellationToken);
+        var customer = await _userRepository.FindByIdAsync(feedback.CustomersId, cancellationToken);
 
         // Create updated feedback response
         var existingImages = feedback.Images
@@ -139,10 +139,10 @@ public class UpdateFeedbackCommandHandler : ICommandHandler<Contract.Services.Fe
         var response = new Responses.FeedbackResponse
         {
             Id = feedback.Id,
-            OrderDetailId = feedback.OrderDetailId,
+            OrderDetailId = feedback.OrderDetailsId,
             ProductName = match.Name,
             ProductImage = match.CoverImages.FirstOrDefault()?.Url ?? "",
-            CustomerId = feedback.CustomerId,
+            CustomerId = feedback.CustomersId,
             CustomerName = customer != null ? $"{customer.FirstName} {customer.LastName}" : "Anonymous",
             Rating = feedback.Rating,
             Comment = feedback.Comment,

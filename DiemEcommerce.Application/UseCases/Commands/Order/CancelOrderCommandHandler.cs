@@ -38,7 +38,7 @@ public class CancelOrderCommandHandler : ICommandHandler<Contract.Services.Order
         }
 
         // Verify the user is the owner of the order
-        if (order.CustomerId != request.CustomerId)
+        if (order.CustomersId != request.CustomerId)
         {
             return Result.Failure(new Error("403", "You are not authorized to cancel this order"));
         }
@@ -50,7 +50,7 @@ public class CancelOrderCommandHandler : ICommandHandler<Contract.Services.Order
         }
 
         // Get customer user for refunds if needed
-        var customerUser = await _userRepository.FindAll(u => u.CustomerId == order.CustomerId)
+        var customerUser = await _userRepository.FindAll(u => u.CustomersId == order.CustomersId)
             .FirstOrDefaultAsync(cancellationToken);
 
         if (customerUser == null)

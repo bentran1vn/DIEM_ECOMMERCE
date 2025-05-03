@@ -3,10 +3,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace DiemEcommerce.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial1 : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -39,7 +41,6 @@ namespace DiemEcommerce.Persistence.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
                     CreatedOnUtc = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     ModifiedOnUtc = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false)
@@ -64,7 +65,6 @@ namespace DiemEcommerce.Persistence.Migrations
                     TaxCode = table.Column<string>(type: "text", nullable: false),
                     BankAccount = table.Column<string>(type: "text", nullable: false),
                     BankName = table.Column<string>(type: "text", nullable: false),
-                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
                     CreatedOnUtc = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     ModifiedOnUtc = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false)
@@ -75,7 +75,7 @@ namespace DiemEcommerce.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Roles",
+                name: "Role",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -86,7 +86,7 @@ namespace DiemEcommerce.Persistence.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Roles", x => x.Id);
+                    table.PrimaryKey("PK_Role", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -101,7 +101,7 @@ namespace DiemEcommerce.Persistence.Migrations
                     TotalPrice = table.Column<decimal>(type: "numeric", nullable: false),
                     PaymentMethod = table.Column<string>(type: "text", nullable: false),
                     Status = table.Column<int>(type: "integer", nullable: false),
-                    CustomerId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CustomersId = table.Column<Guid>(type: "uuid", nullable: false),
                     CreatedOnUtc = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     ModifiedOnUtc = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false)
@@ -110,8 +110,8 @@ namespace DiemEcommerce.Persistence.Migrations
                 {
                     table.PrimaryKey("PK_Orders", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Orders_Customers_CustomerId",
-                        column: x => x.CustomerId,
+                        name: "FK_Orders_Customers_CustomersId",
+                        column: x => x.CustomersId,
                         principalTable: "Customers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -124,10 +124,7 @@ namespace DiemEcommerce.Persistence.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: false),
                     Description = table.Column<string>(type: "text", nullable: false),
-                    CoverImages = table.Column<string[]>(type: "text[]", nullable: false),
-                    FactoryId = table.Column<Guid>(type: "uuid", nullable: false),
                     FactoriesId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CategoryId = table.Column<Guid>(type: "uuid", nullable: false),
                     CategoriesId = table.Column<Guid>(type: "uuid", nullable: false),
                     CreatedOnUtc = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     ModifiedOnUtc = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
@@ -161,11 +158,9 @@ namespace DiemEcommerce.Persistence.Migrations
                     FirstName = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     LastName = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     PhoneNumber = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    RoleId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Balance = table.Column<double>(type: "double precision", nullable: false),
                     RolesId = table.Column<Guid>(type: "uuid", nullable: false),
-                    FactoryId = table.Column<Guid>(type: "uuid", nullable: true),
                     FactoriesId = table.Column<Guid>(type: "uuid", nullable: true),
-                    CustomerId = table.Column<Guid>(type: "uuid", nullable: true),
                     CustomersId = table.Column<Guid>(type: "uuid", nullable: true),
                     CreatedOnUtc = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     ModifiedOnUtc = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
@@ -185,11 +180,43 @@ namespace DiemEcommerce.Persistence.Migrations
                         principalTable: "Factories",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_User_Roles_RolesId",
+                        name: "FK_User_Role_RolesId",
                         column: x => x.RolesId,
-                        principalTable: "Roles",
+                        principalTable: "Role",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "MatchMedias",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Url = table.Column<string>(type: "text", nullable: false),
+                    MatchesId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreatedOnUtc = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    ModifiedOnUtc = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MatchMedias", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_MatchMedias_Matches_MatchesId",
+                        column: x => x.MatchesId,
+                        principalTable: "Matches",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "Role",
+                columns: new[] { "Id", "CreatedOnUtc", "IsDeleted", "ModifiedOnUtc", "Name" },
+                values: new object[,]
+                {
+                    { new Guid("5a900888-430b-4073-a2f4-824659ff36bf"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), false, null, "Customer" },
+                    { new Guid("662904d3-6b20-437f-842c-d7e1c52bdf63"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), false, null, "Admin" },
+                    { new Guid("6a900888-430b-4073-a2f4-824659ff36bf"), new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), false, null, "Factory" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -208,19 +235,26 @@ namespace DiemEcommerce.Persistence.Migrations
                 column: "FactoriesId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Orders_CustomerId",
+                name: "IX_MatchMedias_MatchesId",
+                table: "MatchMedias",
+                column: "MatchesId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Orders_CustomersId",
                 table: "Orders",
-                column: "CustomerId");
+                column: "CustomersId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_User_CustomersId",
                 table: "User",
-                column: "CustomersId");
+                column: "CustomersId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_User_FactoriesId",
                 table: "User",
-                column: "FactoriesId");
+                column: "FactoriesId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_User_RolesId",
@@ -232,7 +266,7 @@ namespace DiemEcommerce.Persistence.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Matches");
+                name: "MatchMedias");
 
             migrationBuilder.DropTable(
                 name: "Orders");
@@ -241,16 +275,19 @@ namespace DiemEcommerce.Persistence.Migrations
                 name: "User");
 
             migrationBuilder.DropTable(
-                name: "Categories");
+                name: "Matches");
 
             migrationBuilder.DropTable(
                 name: "Customers");
 
             migrationBuilder.DropTable(
-                name: "Factories");
+                name: "Role");
 
             migrationBuilder.DropTable(
-                name: "Roles");
+                name: "Categories");
+
+            migrationBuilder.DropTable(
+                name: "Factories");
         }
     }
 }

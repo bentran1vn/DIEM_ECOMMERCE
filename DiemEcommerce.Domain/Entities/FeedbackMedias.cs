@@ -6,8 +6,8 @@ public class FeedbackMedias : Entity<Guid>, IAuditableEntity
 {
     public string Url { get; set; }
     
-    public Guid FeedbackId { get; set; }
-    public virtual Feedbacks Feedback { get; set; }
+    public Guid FeedbacksId { get; set; }
+    public virtual Feedbacks Feedbacks { get; set; } = default!;
     
     public DateTimeOffset CreatedOnUtc { get; set; }
     public DateTimeOffset? ModifiedOnUtc { get; set; }

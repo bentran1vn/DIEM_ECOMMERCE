@@ -1,4 +1,5 @@
 using Carter;
+using DiemEcommerce.Contract.Constant.SystemRoles;
 using DiemEcommerce.Contract.Services.Category;
 using DiemEcommerce.Presentation.Abstractions;
 using MediatR;
@@ -19,9 +20,12 @@ public class CategoryApi: ApiEndpoint, ICarterModule
             .MapGroup(BaseUrl).HasApiVersion(1);
         
         group1.MapGet("", GetCategoriesV1);
-        group1.MapPost("", CreateCategoryV1);
-        group1.MapPut("{id}", UpdateCategoryV1);
-        group1.MapDelete("{id}", DeleteCategoryV1);
+        group1.MapPost("", CreateCategoryV1)
+            .RequireAuthorization(RoleNames.Admin);
+        group1.MapPut("{id}", UpdateCategoryV1)
+            .RequireAuthorization(RoleNames.Admin);
+        group1.MapDelete("{id}", DeleteCategoryV1)
+            .RequireAuthorization(RoleNames.Admin);
     }
     
     public static async Task<IResult> GetCategoriesV1(ISender sender)

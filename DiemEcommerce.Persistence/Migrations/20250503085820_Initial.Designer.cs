@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DiemEcommerce.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250424075853_FixRoleReference")]
-    partial class FixRoleReference
+    [Migration("20250503085820_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -79,9 +79,6 @@ namespace DiemEcommerce.Persistence.Migrations
                     b.Property<DateTimeOffset?>("ModifiedOnUtc")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
-
                     b.HasKey("Id");
 
                     b.ToTable("Customers");
@@ -138,9 +135,6 @@ namespace DiemEcommerce.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
-
                     b.Property<string>("Website")
                         .IsRequired()
                         .HasColumnType("text");
@@ -148,6 +142,35 @@ namespace DiemEcommerce.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Factories");
+                });
+
+            modelBuilder.Entity("DiemEcommerce.Domain.Entities.MatchMedias", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("CreatedOnUtc")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<Guid>("MatchesId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset?>("ModifiedOnUtc")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MatchesId");
+
+                    b.ToTable("MatchMedias");
                 });
 
             modelBuilder.Entity("DiemEcommerce.Domain.Entities.Matches", b =>
@@ -159,13 +182,6 @@ namespace DiemEcommerce.Persistence.Migrations
                     b.Property<Guid>("CategoriesId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("CategoryId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string[]>("CoverImages")
-                        .IsRequired()
-                        .HasColumnType("text[]");
-
                     b.Property<DateTimeOffset>("CreatedOnUtc")
                         .HasColumnType("timestamp with time zone");
 
@@ -174,9 +190,6 @@ namespace DiemEcommerce.Persistence.Migrations
                         .HasColumnType("text");
 
                     b.Property<Guid>("FactoriesId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("FactoryId")
                         .HasColumnType("uuid");
 
                     b.Property<bool>("IsDeleted")
@@ -210,7 +223,7 @@ namespace DiemEcommerce.Persistence.Migrations
                     b.Property<DateTimeOffset>("CreatedOnUtc")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid>("CustomerId")
+                    b.Property<Guid>("CustomersId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("Email")
@@ -240,7 +253,7 @@ namespace DiemEcommerce.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CustomerId");
+                    b.HasIndex("CustomersId");
 
                     b.ToTable("Orders");
                 });
@@ -266,7 +279,30 @@ namespace DiemEcommerce.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Roles");
+                    b.ToTable("Role", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("662904d3-6b20-437f-842c-d7e1c52bdf63"),
+                            CreatedOnUtc = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            IsDeleted = false,
+                            Name = "Admin"
+                        },
+                        new
+                        {
+                            Id = new Guid("6a900888-430b-4073-a2f4-824659ff36bf"),
+                            CreatedOnUtc = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            IsDeleted = false,
+                            Name = "Factory"
+                        },
+                        new
+                        {
+                            Id = new Guid("5a900888-430b-4073-a2f4-824659ff36bf"),
+                            CreatedOnUtc = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            IsDeleted = false,
+                            Name = "Customer"
+                        });
                 });
 
             modelBuilder.Entity("DiemEcommerce.Domain.Entities.Users", b =>
@@ -275,11 +311,11 @@ namespace DiemEcommerce.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<double>("Balance")
+                        .HasColumnType("double precision");
+
                     b.Property<DateTimeOffset>("CreatedOnUtc")
                         .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid?>("CustomerId")
-                        .HasColumnType("uuid");
 
                     b.Property<Guid?>("CustomersId")
                         .HasColumnType("uuid");
@@ -290,9 +326,6 @@ namespace DiemEcommerce.Persistence.Migrations
                         .HasColumnType("character varying(100)");
 
                     b.Property<Guid?>("FactoriesId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid?>("FactoryId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("FirstName")
@@ -331,9 +364,11 @@ namespace DiemEcommerce.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CustomersId");
+                    b.HasIndex("CustomersId")
+                        .IsUnique();
 
-                    b.HasIndex("FactoriesId");
+                    b.HasIndex("FactoriesId")
+                        .IsUnique();
 
                     b.HasIndex("RolesId");
 
@@ -347,6 +382,17 @@ namespace DiemEcommerce.Persistence.Migrations
                         .HasForeignKey("ParentId");
 
                     b.Navigation("Parent");
+                });
+
+            modelBuilder.Entity("DiemEcommerce.Domain.Entities.MatchMedias", b =>
+                {
+                    b.HasOne("DiemEcommerce.Domain.Entities.Matches", "Matches")
+                        .WithMany("CoverImages")
+                        .HasForeignKey("MatchesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Matches");
                 });
 
             modelBuilder.Entity("DiemEcommerce.Domain.Entities.Matches", b =>
@@ -370,24 +416,24 @@ namespace DiemEcommerce.Persistence.Migrations
 
             modelBuilder.Entity("DiemEcommerce.Domain.Entities.Orders", b =>
                 {
-                    b.HasOne("DiemEcommerce.Domain.Entities.Customers", "Customer")
+                    b.HasOne("DiemEcommerce.Domain.Entities.Customers", "Customers")
                         .WithMany("Orders")
-                        .HasForeignKey("CustomerId")
+                        .HasForeignKey("CustomersId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Customer");
+                    b.Navigation("Customers");
                 });
 
             modelBuilder.Entity("DiemEcommerce.Domain.Entities.Users", b =>
                 {
                     b.HasOne("DiemEcommerce.Domain.Entities.Customers", "Customers")
-                        .WithMany()
-                        .HasForeignKey("CustomersId");
+                        .WithOne("Users")
+                        .HasForeignKey("DiemEcommerce.Domain.Entities.Users", "CustomersId");
 
                     b.HasOne("DiemEcommerce.Domain.Entities.Factories", "Factories")
-                        .WithMany()
-                        .HasForeignKey("FactoriesId");
+                        .WithOne("Users")
+                        .HasForeignKey("DiemEcommerce.Domain.Entities.Users", "FactoriesId");
 
                     b.HasOne("DiemEcommerce.Domain.Entities.Roles", "Roles")
                         .WithMany()
@@ -412,11 +458,22 @@ namespace DiemEcommerce.Persistence.Migrations
             modelBuilder.Entity("DiemEcommerce.Domain.Entities.Customers", b =>
                 {
                     b.Navigation("Orders");
+
+                    b.Navigation("Users")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("DiemEcommerce.Domain.Entities.Factories", b =>
                 {
                     b.Navigation("Matches");
+
+                    b.Navigation("Users")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("DiemEcommerce.Domain.Entities.Matches", b =>
+                {
+                    b.Navigation("CoverImages");
                 });
 #pragma warning restore 612, 618
         }

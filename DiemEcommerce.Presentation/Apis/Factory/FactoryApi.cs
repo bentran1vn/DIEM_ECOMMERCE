@@ -1,4 +1,5 @@
 using Carter;
+using DiemEcommerce.Contract.Constant.SystemRoles;
 using DiemEcommerce.Contract.Services.Factory;
 using DiemEcommerce.Presentation.Abstractions;
 using MediatR;
@@ -26,7 +27,7 @@ public class FactoryApi : ApiEndpoint, ICarterModule
         
         group1.MapPost("", CreateFactoryV1)
             .DisableAntiforgery()
-            .RequireAuthorization()
+            .RequireAuthorization(RoleNames.Factory)
             .Accepts<Commands.CreateFactoryBody>("multipart/form-data");
         
         group1.MapPut("{id}", UpdateFactoryV1)

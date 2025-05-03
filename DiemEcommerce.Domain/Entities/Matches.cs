@@ -4,15 +4,15 @@ namespace DiemEcommerce.Domain.Entities;
 
 public class Matches: Entity<Guid>, IAuditableEntity
 {
-    public string Name { get; set; }
-    public string Description { get; set; }
-    public virtual ICollection<MatchMedias> CoverImages { get; set; }
+    public required string Name { get; set; }
+    public required string Description { get; set; }
+    public virtual ICollection<MatchMedias> CoverImages { get; set; } = default!;
     
-    public Guid FactoryId { get; set; }
-    public virtual Factories Factories { get; set; }
+    public Guid FactoriesId { get; set; }
+    public virtual Factories Factories { get; set; } = default!;
     
-    public Guid CategoryId { get; set; }
-    public virtual Categories Categories { get; set; }
+    public Guid CategoriesId { get; set; }
+    public virtual Categories Categories { get; set; } = default!;
     
     public DateTimeOffset CreatedOnUtc { get; set; }
     public DateTimeOffset? ModifiedOnUtc { get; set; }
