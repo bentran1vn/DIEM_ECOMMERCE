@@ -14,7 +14,8 @@ public class Orders: Entity<Guid>, IAuditableEntity
     
     public Guid CustomersId { get; set; }
     public virtual Customers Customers { get; set; } = default!;
-    
+    public virtual ICollection<OrderDetails> OrderDetails { get; set; } = new List<OrderDetails>();
+    public virtual Transactions Transactions { get; set; } = default!;
     public DateTimeOffset CreatedOnUtc { get; set; }
     public DateTimeOffset? ModifiedOnUtc { get; set; }
 }

@@ -166,7 +166,7 @@ public class OrderApi : ApiEndpoint, ICarterModule
     }
     
     public static async Task<IResult> CreateOrderV1(ISender sender, HttpContext context, 
-        [FromBody] Commands.CreateOrderCommand command)
+        [FromBody] Commands.CreateOrderBody body)
     {
         var customerId = context.User.FindFirst("CustomerId")?.Value;
         
@@ -176,7 +176,7 @@ public class OrderApi : ApiEndpoint, ICarterModule
         }
 
         // Override the customer ID in the command with the one from the token
-        var updatedCommand = command with { CustomerId = customerGuid };
+        var updatedCommand = new Commands.CreateOrderCommand(customerGuid, body);
         
         var result = await sender.Send(updatedCommand);
         

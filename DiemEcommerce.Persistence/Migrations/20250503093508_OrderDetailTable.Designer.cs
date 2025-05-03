@@ -3,6 +3,7 @@ using System;
 using DiemEcommerce.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DiemEcommerce.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250503093508_OrderDetailTable")]
+    partial class OrderDetailTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -411,58 +414,6 @@ namespace DiemEcommerce.Persistence.Migrations
                         });
                 });
 
-            modelBuilder.Entity("DiemEcommerce.Domain.Entities.Transactions", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<double>("AfterBalance")
-                        .HasColumnType("double precision");
-
-                    b.Property<double>("Amount")
-                        .HasColumnType("double precision");
-
-                    b.Property<DateTimeOffset>("CreatedOnUtc")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<double>("CurrentBalance")
-                        .HasColumnType("double precision");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("text");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
-
-                    b.Property<DateTimeOffset?>("ModifiedOnUtc")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid?>("OrdersId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("ReceiverId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("SenderId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("TransactionStatus")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("TransactionType")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OrdersId")
-                        .IsUnique();
-
-                    b.ToTable("Transactions");
-                });
-
             modelBuilder.Entity("DiemEcommerce.Domain.Entities.Users", b =>
                 {
                     b.Property<Guid>("Id")
@@ -632,15 +583,6 @@ namespace DiemEcommerce.Persistence.Migrations
                     b.Navigation("Customers");
                 });
 
-            modelBuilder.Entity("DiemEcommerce.Domain.Entities.Transactions", b =>
-                {
-                    b.HasOne("DiemEcommerce.Domain.Entities.Orders", "Orders")
-                        .WithOne("Transactions")
-                        .HasForeignKey("DiemEcommerce.Domain.Entities.Transactions", "OrdersId");
-
-                    b.Navigation("Orders");
-                });
-
             modelBuilder.Entity("DiemEcommerce.Domain.Entities.Users", b =>
                 {
                     b.HasOne("DiemEcommerce.Domain.Entities.Customers", "Customers")
@@ -708,9 +650,6 @@ namespace DiemEcommerce.Persistence.Migrations
             modelBuilder.Entity("DiemEcommerce.Domain.Entities.Orders", b =>
                 {
                     b.Navigation("OrderDetails");
-
-                    b.Navigation("Transactions")
-                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

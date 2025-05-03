@@ -44,6 +44,7 @@ public class GetAllMatchesQueryHandler : IQueryHandler<Contract.Services.Match.Q
         // Project to response type
         var pagedQuery = query.Select(m => new Responses.MatchResponse
         {
+            Id = m.Id,
             Name = m.Name,
             Description = m.Description,
             CoverImages = m.CoverImages.Select(x => new Responses.MatchMedia

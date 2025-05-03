@@ -32,7 +32,10 @@ public class GetLoginQueryHandler : IQueryHandler<Query.Login, Response.Authenti
         var user =
             await _userRepository.FindSingleAsync(x =>
                 x.Email.Equals(request.EmailOrUserName) || x.Username.Equals(request.EmailOrUserName)
-                , cancellationToken, x => x.Factories,  x => x.Roles);
+                , cancellationToken,
+                x => x.Factories,
+                x => x.Customers,
+                x => x.Roles);
         
             //, x => x.Subscription
         
@@ -69,6 +72,11 @@ public class GetLoginQueryHandler : IQueryHandler<Query.Login, Response.Authenti
         if (user.Roles.Name.Equals(RoleNames.Factory) && user.Factories?.Id != null)
         {
             claims.Add(new Claim("FactoryId", user.Factories.Id.ToString()));
+        }
+        
+        if (user.Roles.Name.Equals(RoleNames.Customer) && user.Customers?.Id != null)
+        {
+            claims.Add(new Claim("CustomerId", user.Customers.Id.ToString()));
         }
 
         var accessToken = _jwtTokenService.GenerateAccessToken(claims);

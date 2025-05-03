@@ -5,14 +5,29 @@ namespace DiemEcommerce.Contract.Services.Order;
 public static class Commands
 {
     // Command to create a new order
-    public record CreateOrderCommand(
-        Guid CustomerId,
-        string? Address,
-        string? Phone,
-        string? Email,
-        string PaymentMethod,
-        List<OrderItemDto> OrderItems
-    ) : ICommand<Responses.OrderResponse>;
+    public class CreateOrderBody
+    {
+        public string? Address { get; set; }
+        public string? Phone { get; set; }
+        public string? Email { get; set; }
+        public string PaymentMethod { get; set; }
+        public List<OrderItemDto> OrderItems { get; set; }
+    };
+    
+    public class CreateOrderCommand: CreateOrderBody, ICommand<Responses.OrderResponse>
+    {
+        public CreateOrderCommand(Guid customerId, CreateOrderBody body)
+        {
+            CustomerId = customerId;
+            Address = body.Address;
+            Phone = body.Phone;
+            Email = body.Email;
+            PaymentMethod = body.PaymentMethod;
+            OrderItems = body.OrderItems;
+        }
+
+        public Guid CustomerId { get; set; }
+    }
     
     // Data transfer object for order items
     public record OrderItemDto(

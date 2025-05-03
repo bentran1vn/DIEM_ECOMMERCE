@@ -19,6 +19,7 @@ public class Users : Entity<Guid>, IAuditableEntity
     public Guid? FactoriesId { get; set; }
     public virtual Factories? Factories { get; set; }
     public Guid? CustomersId { get; set; }
+    [System.Text.Json.Serialization.JsonIgnore]
     public virtual Customers? Customers { get; set; }
     
     public DateTimeOffset CreatedOnUtc { get; set; }
