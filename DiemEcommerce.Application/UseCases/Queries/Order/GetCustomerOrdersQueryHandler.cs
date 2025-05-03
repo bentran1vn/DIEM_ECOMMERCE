@@ -36,10 +36,10 @@ public class GetCustomerOrdersQueryHandler : IQueryHandler<Contract.Services.Ord
         var query = _orderRepository.FindAll(o => o.CustomersId == request.CustomerId && !o.IsDeleted);
 
         // Apply status filter if provided
-        if (request.Status.HasValue)
-        {
-            query = query.Where(o => o.Status == request.Status.Value);
-        }
+        // if (request.Status.HasValue)
+        // {
+        //     query = query.Where(o => o.Status == request.Status.Value);
+        // }
 
         // Order by creation date (newest first)
         query = query.OrderByDescending(o => o.CreatedOnUtc);
@@ -54,9 +54,8 @@ public class GetCustomerOrdersQueryHandler : IQueryHandler<Contract.Services.Ord
             Phone = o.Phone,
             Email = o.Email,
             TotalPrice = o.TotalPrice,
-            PaymentMethod = o.PaymentMethod,
-            Status = o.Status,
-            StatusText = GetOrderStatusText(o.Status),
+            PaymentMethod = "o.PaymentMethod",
+            StatusText = "",
             CreatedOnUtc = o.CreatedOnUtc
         });
 

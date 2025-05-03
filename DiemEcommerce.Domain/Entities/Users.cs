@@ -12,7 +12,7 @@ public class Users : Entity<Guid>, IAuditableEntity
     public string LastName { get; set; } = default!;
     public string FullName => $"{FirstName} {LastName}";
     public string PhoneNumber { get; set; } = default!;
-    public double Balance { get; set; } = 0;
+    public decimal Balance { get; set; } = 0;
     public Guid RolesId { get; set; }
     public virtual Roles Roles { get; set; } = default!;
     

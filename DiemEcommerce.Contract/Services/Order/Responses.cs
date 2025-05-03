@@ -18,6 +18,23 @@ public static class Responses
         public DateTimeOffset CreatedOnUtc { get; set; }
     }
     
+    public class CreateOrderResponse
+    {
+        public Guid Id { get; set; }
+        public Guid CustomerId { get; set; }
+        public string CustomerName { get; set; }
+        public string? Address { get; set; }
+        public string? Phone { get; set; }
+        public string? Email { get; set; }
+        public decimal TotalPrice { get; set; }
+        public string Status { get; set; }
+        public string QrUrl { get; set; }
+        public string SystemBankName { get; set; }
+        public string SystemBankAccount { get; set; }
+        public string SystemBankDescription { get; set; }
+        public DateTimeOffset CreatedOnUtc { get; set; }
+    }
+    
     // Detailed order response with order items
     public class OrderDetailResponse : OrderResponse
     {

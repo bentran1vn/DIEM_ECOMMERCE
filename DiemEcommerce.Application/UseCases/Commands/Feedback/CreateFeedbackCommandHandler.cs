@@ -55,10 +55,10 @@ public class CreateFeedbackCommandHandler : ICommandHandler<Contract.Services.Fe
         }
 
         // Validate order is delivered
-        if (orderDetail.Orders.Status != 4) // Delivered
-        {
-            return Result.Failure<Responses.FeedbackResponse>(new Error("400", "Cannot leave feedback for orders that have not been delivered"));
-        }
+        // if (orderDetail.Orders.Status != 4) // Delivered
+        // {
+        //     return Result.Failure<Responses.FeedbackResponse>(new Error("400", "Cannot leave feedback for orders that have not been delivered"));
+        // }
 
         // Check if feedback already exists for this order detail
         var existingFeedback = await _feedbackRepository.FindAll(

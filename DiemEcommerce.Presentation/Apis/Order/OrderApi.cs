@@ -1,4 +1,5 @@
 using Carter;
+using DiemEcommerce.Application.DependencyInjection.Extensions;
 using DiemEcommerce.Contract.Constant.SystemRoles;
 using DiemEcommerce.Contract.Services.Order;
 using DiemEcommerce.Presentation.Abstractions;
@@ -21,14 +22,20 @@ public class OrderApi : ApiEndpoint, ICarterModule
             .RequireAuthorization(); // All order endpoints require authentication
         
         // GET endpoints
-        group1.MapGet("", GetCustomerOrdersV1);
+        group1.MapGet("", GetCustomerOrdersV1)
+            .RequireAuthorization(RoleNames.Customer);
+        
         group1.MapGet("factory", GetFactoryOrdersV1);
+        
         group1.MapGet("{id}", GetOrderByIdV1);
+        
         group1.MapGet("{id}/transactions", GetOrderWithTransactionsV1);
         
         // POST endpoints
         group1.MapPost("", CreateOrderV1)
             .RequireAuthorization(RoleNames.Customer);
+        
+        group1.MapPost("sepay-payment", SePayCallBack);
         
         // PUT endpoints
         group1.MapPut("{id}/status", UpdateOrderStatusV1);
@@ -261,5 +268,21 @@ public class OrderApi : ApiEndpoint, ICarterModule
     {
         public Guid OrderId { get; set; }
         public int Status { get; set; }
+    }
+    
+    public static async Task<IResult> SePayCallBack(ISender sender, [FromBody] Commands.SePayBody request)
+    {
+        var (type, id) = QrContentParser.TakeOrderIdFromContent(request.content);
+        if (type.Equals("ORDER"))
+        {
+            await sender.Send(new Commands.CreateSePayOrderCommand()
+            {
+                orderId = id,
+                transactionDate = request.transactionDate,
+                transferAmount = request.transferAmount
+            });
+        }
+        var response = new { success = true };
+        return Results.Json(response);
     }
 }

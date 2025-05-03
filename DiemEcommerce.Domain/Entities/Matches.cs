@@ -6,6 +6,8 @@ public class Matches: Entity<Guid>, IAuditableEntity
 {
     public required string Name { get; set; }
     public required string Description { get; set; }
+    public required decimal Price { get; set; }
+    public required int Quantity { get; set; }
     public virtual ICollection<MatchMedias> CoverImages { get; set; } = default!;
     
     public Guid FactoriesId { get; set; }

@@ -3,6 +3,7 @@ using System;
 using DiemEcommerce.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DiemEcommerce.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250503102241_OrderAndTransactionEntity")]
+    partial class OrderAndTransactionEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -347,11 +350,11 @@ namespace DiemEcommerce.Persistence.Migrations
                     b.Property<string>("Note")
                         .HasColumnType("text");
 
-                    b.Property<string>("Phone")
+                    b.Property<string>("PaymentMethod")
+                        .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("Status")
-                        .IsRequired()
+                    b.Property<string>("Phone")
                         .HasColumnType("text");
 
                     b.Property<decimal>("TotalPrice")
@@ -436,7 +439,6 @@ namespace DiemEcommerce.Persistence.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<string>("Method")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTimeOffset?>("ModifiedOnUtc")
@@ -461,7 +463,8 @@ namespace DiemEcommerce.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("OrdersId");
+                    b.HasIndex("OrdersId")
+                        .IsUnique();
 
                     b.ToTable("Transactions");
                 });
@@ -638,8 +641,8 @@ namespace DiemEcommerce.Persistence.Migrations
             modelBuilder.Entity("DiemEcommerce.Domain.Entities.Transactions", b =>
                 {
                     b.HasOne("DiemEcommerce.Domain.Entities.Orders", "Orders")
-                        .WithMany("Transactions")
-                        .HasForeignKey("OrdersId");
+                        .WithOne("Transactions")
+                        .HasForeignKey("DiemEcommerce.Domain.Entities.Transactions", "OrdersId");
 
                     b.Navigation("Orders");
                 });
@@ -711,7 +714,8 @@ namespace DiemEcommerce.Persistence.Migrations
                 {
                     b.Navigation("OrderDetails");
 
-                    b.Navigation("Transactions");
+                    b.Navigation("Transactions")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }
