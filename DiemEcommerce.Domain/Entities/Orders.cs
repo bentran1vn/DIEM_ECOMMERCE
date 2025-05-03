@@ -12,6 +12,7 @@ public class Orders: Entity<Guid>, IAuditableEntity
     public Guid CustomersId { get; set; }
     public string Status { get; set; } = default!;
     // Success, Pending, Failed
+    public bool IsFeedback { get; set; } = false;
     public virtual Customers Customers { get; set; } = default!;
     public virtual ICollection<OrderDetails> OrderDetails { get; set; } = new List<OrderDetails>();
     public virtual ICollection<Transactions> Transactions { get; set; } = new List<Transactions>();

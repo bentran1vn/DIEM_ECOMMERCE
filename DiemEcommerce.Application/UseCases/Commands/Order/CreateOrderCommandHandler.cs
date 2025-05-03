@@ -74,6 +74,7 @@ public class CreateOrderCommandHandler : ICommandHandler<Contract.Services.Order
             Email = request.Email,
             Note = request.Note,
             TotalPrice = totalPrice,
+            IsFeedback = false,
             Status = request.IsQR ? "Pending" : "Success",
         };
         
