@@ -14,6 +14,8 @@ public class Matches: Entity<Guid>, IAuditableEntity
     public Guid CategoriesId { get; set; }
     public virtual Categories Categories { get; set; } = default!;
     
+    public virtual ICollection<OrderDetails> OrderDetails { get; set; } = new List<OrderDetails>();
+    
     public DateTimeOffset CreatedOnUtc { get; set; }
     public DateTimeOffset? ModifiedOnUtc { get; set; }
 }

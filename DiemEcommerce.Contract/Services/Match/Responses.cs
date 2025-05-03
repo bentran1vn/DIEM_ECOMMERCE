@@ -4,6 +4,7 @@ public class Responses
 {
     public class MatchResponse
     {
+        public Guid Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public IEnumerable<MatchMedia> CoverImages { get; set; }

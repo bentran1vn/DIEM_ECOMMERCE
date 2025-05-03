@@ -11,12 +11,14 @@ namespace DiemEcommerce.Application.UseCases.Commands.Identity;
 public class RegisterCommandHandler : ICommandHandler<Command.RegisterCommand>
 {
     private readonly IRepositoryBase<ApplicationDbContext, Users, Guid> _userRepository;
+    private readonly IRepositoryBase<ApplicationDbContext, Customers, Guid> _customersRepository;
     private readonly IPasswordHasherService _passwordHasherService;
 
-    public RegisterCommandHandler(IRepositoryBase<ApplicationDbContext, Users, Guid> userRepository, IPasswordHasherService passwordHasherService)
+    public RegisterCommandHandler(IRepositoryBase<ApplicationDbContext, Users, Guid> userRepository, IPasswordHasherService passwordHasherService, IRepositoryBase<ApplicationDbContext, Customers, Guid> customersRepository)
     {
         _userRepository = userRepository;
         _passwordHasherService = passwordHasherService;
+        _customersRepository = customersRepository;
     }
 
     public async Task<Result> Handle(Command.RegisterCommand request, CancellationToken cancellationToken)
@@ -42,21 +44,35 @@ public class RegisterCommandHandler : ICommandHandler<Command.RegisterCommand>
             PhoneNumber = request.Phonenumber,
             Password = hashingPassword,
         };
+        
 
         if (request.Role == 0)
         {
             user.RolesId = new Guid("5a900888-430b-4073-a2f4-824659ff36bf");
+            
+            var customer = new Customers()
+            {
+                Id = Guid.NewGuid(),
+                CreatedOnUtc = DateTime.UtcNow,
+            };
+            
+            user.CustomersId = customer.Id;
+            
+            _userRepository.Add(user);
+            
+            _customersRepository.Add(customer);
         }
         else if (request.Role == 1)
         {
             user.RolesId = new Guid("6a900888-430b-4073-a2f4-824659ff36bf");
+            
+            _userRepository.Add(user);
         }
         else
         {
             throw new Exception("Role not found !");
         }
         
-        _userRepository.Add(user);
 
         return Result.Success(user);
     }
