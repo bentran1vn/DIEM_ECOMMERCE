@@ -10,12 +10,14 @@ namespace DiemEcommerce.Application.UseCases.Commands.Factory;
 public class CreateFactoryCommandHandler : ICommandHandler<Contract.Services.Factory.Commands.CreateFactoryCommand>
 {
     private readonly IRepositoryBase<ApplicationDbContext, Factories, Guid> _factoryRepository;
+    private readonly IRepositoryBase<ApplicationDbContext, Users, Guid> _userRepository;
     private readonly IMediaService _mediaService;
 
-    public CreateFactoryCommandHandler(IRepositoryBase<ApplicationDbContext, Factories, Guid> factoryRepository, IMediaService mediaService)
+    public CreateFactoryCommandHandler(IRepositoryBase<ApplicationDbContext, Factories, Guid> factoryRepository, IMediaService mediaService, IRepositoryBase<ApplicationDbContext, Users, Guid> userRepository)
     {
         _factoryRepository = factoryRepository;
         _mediaService = mediaService;
+        _userRepository = userRepository;
     }
 
     public async Task<Result> Handle(Contract.Services.Factory.Commands.CreateFactoryCommand request, CancellationToken cancellationToken)
@@ -25,6 +27,14 @@ public class CreateFactoryCommandHandler : ICommandHandler<Contract.Services.Fac
         
         if(isExistName != null)
             return Result.Failure(new Error("500", "Factory with this name already exists"));
+        
+        var user = await _userRepository.FindSingleAsync(x => 
+            x.Id == request.UserId, cancellationToken);
+        
+        if (user == null)
+        {
+            return Result.Failure(new Error("500", "User not found"));
+        }
         
         var logo = await _mediaService.UploadImageAsync(request.Logo);
 
@@ -40,11 +50,13 @@ public class CreateFactoryCommandHandler : ICommandHandler<Contract.Services.Fac
             Email = request.Email,
             Website = request.Website,
             BankName = request.BankName,
-            UserId = request.UserId,
             TaxCode = request.TaxCode,
         };
         
         _factoryRepository.Add(factory);
+        
+        // Update user with factory id
+        user.FactoriesId = factory.Id;
 
         return Result.Success("Factory created successfully");
     }

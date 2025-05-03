@@ -7,11 +7,11 @@ public class Feedbacks : Entity<Guid>, IAuditableEntity
     public int Rating { get; set; }
     public string Comment { get; set; } = default!;
     
-    public Guid OrderDetailId { get; set; }
-    public virtual OrderDetails OrderDetail { get; set; } = default!;
+    public Guid OrderDetailsId { get; set; }
+    public virtual OrderDetails OrderDetails { get; set; } = default!;
     
-    public Guid CustomerId { get; set; }
-    public virtual Customers Customer { get; set; }
+    public Guid CustomersId { get; set; }
+    public virtual Customers Customers { get; set; } = default!;
     
     public virtual ICollection<FeedbackMedias> Images { get; set; } = new List<FeedbackMedias>();
     

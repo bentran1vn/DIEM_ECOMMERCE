@@ -24,7 +24,7 @@ public class GetCustomerOrdersQueryHandler : IQueryHandler<Contract.Services.Ord
     public async Task<Result<PagedResult<Responses.OrderResponse>>> Handle(Contract.Services.Order.Queries.GetCustomerOrdersQuery request, CancellationToken cancellationToken)
     {
         // Get customer user
-        var customerUser = await _userRepository.FindAll(u => u.CustomerId == request.CustomerId)
+        var customerUser = await _userRepository.FindAll(u => u.CustomersId == request.CustomerId)
             .FirstOrDefaultAsync(cancellationToken);
 
         if (customerUser == null)
@@ -33,7 +33,7 @@ public class GetCustomerOrdersQueryHandler : IQueryHandler<Contract.Services.Ord
         }
 
         // Build query for orders
-        var query = _orderRepository.FindAll(o => o.CustomerId == request.CustomerId && !o.IsDeleted);
+        var query = _orderRepository.FindAll(o => o.CustomersId == request.CustomerId && !o.IsDeleted);
 
         // Apply status filter if provided
         if (request.Status.HasValue)
@@ -48,7 +48,7 @@ public class GetCustomerOrdersQueryHandler : IQueryHandler<Contract.Services.Ord
         var ordersQuery = query.Select(o => new Responses.OrderResponse
         {
             Id = o.Id,
-            CustomerId = o.CustomerId,
+            CustomerId = o.CustomersId,
             CustomerName = $"{customerUser.FirstName} {customerUser.LastName}",
             Address = o.Address,
             Phone = o.Phone,

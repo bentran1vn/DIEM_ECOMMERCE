@@ -24,9 +24,6 @@ public class UpdateFactoryCommandHandler : ICommandHandler<Contract.Services.Fac
         
         if(isExist == null || isExist.IsDeleted)
             return Result.Failure(new Error("500", "Factory not found"));
-
-        if (isExist.UserId != request.UserId)
-            return Result.Failure(new Error("403", "You are not authorized to update this factory"));
         
         var isExistName = await _factoryRepository.FindSingleAsync(x => 
             x.Name.Trim().ToLower() == request.Name.Trim().ToLower() && x.Id != request.Id, cancellationToken);
@@ -42,7 +39,6 @@ public class UpdateFactoryCommandHandler : ICommandHandler<Contract.Services.Fac
         isExist.Email = request.Email;
         isExist.Website = request.Website;
         isExist.BankName = request.BankName;
-        isExist.UserId = request.UserId;
         isExist.TaxCode = request.TaxCode;
         
         if(request.Logo != null)

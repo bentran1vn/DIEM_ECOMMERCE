@@ -31,7 +31,7 @@ public class GetFactoryOrdersQueryHandler : IQueryHandler<Contract.Services.Orde
     {
         // First get all matches from this factory
         var matchIds = await _matchRepository
-            .FindAll(m => m.FactoryId == request.FactoryId && !m.IsDeleted)
+            .FindAll(m => m.FactoriesId == request.FactoryId && !m.IsDeleted)
             .Select(m => m.Id)
             .ToListAsync(cancellationToken);
 
@@ -47,12 +47,12 @@ public class GetFactoryOrdersQueryHandler : IQueryHandler<Contract.Services.Orde
 
         // Get all order details containing matches from this factory
         var orderDetails = await _orderDetailRepository
-            .FindAll(od => matchIds.Contains(od.MatchId))
+            .FindAll(od => matchIds.Contains(od.MatchesId))
             .ToListAsync(cancellationToken);
 
         // Get all order IDs for this factory
         var orderIds = orderDetails
-            .Select(od => od.OrderId)
+            .Select(od => od.OrdersId)
             .Distinct()
             .ToList();
 
@@ -80,20 +80,20 @@ public class GetFactoryOrdersQueryHandler : IQueryHandler<Contract.Services.Orde
 
         // Get customer IDs to load in a single query
         var customerIds = await query
-            .Select(o => o.CustomerId)
+            .Select(o => o.CustomersId)
             .Distinct()
             .ToListAsync(cancellationToken);
 
         // Load all customers' users in one query
         var customerUsers = await _userRepository
-            .FindAll(u => customerIds.Contains(u.CustomerId.Value))
-            .ToDictionaryAsync(u => u.CustomerId.Value, u => u, cancellationToken);
+            .FindAll(u => customerIds.Contains(u.CustomersId.Value))
+            .ToDictionaryAsync(u => u.CustomersId.Value, u => u, cancellationToken);
 
         // Project to response
         var ordersQuery = query.Select(o => new
         {
             Order = o,
-            CustomerId = o.CustomerId
+            CustomerId = o.CustomersId
         });
 
         // Execute query to get paged results

@@ -24,7 +24,7 @@ public class GetAllMatchesQueryHandler : IQueryHandler<Contract.Services.Match.Q
         // Apply category filter if provided
         if (request.CategoryId.HasValue)
         {
-            query = query.Where(m => m.CategoryId == request.CategoryId.Value);
+            query = query.Where(m => m.CategoriesId == request.CategoryId.Value);
         }
 
         // Apply search term filter if provided
@@ -51,9 +51,9 @@ public class GetAllMatchesQueryHandler : IQueryHandler<Contract.Services.Match.Q
                 Id = x.Id,
                 Url = x.Url
             }),
-            CategoryId = m.CategoryId,
+            CategoryId = m.CategoriesId,
             CategoryName = m.Categories.Name,
-            FactoryId = m.FactoryId,
+            FactoryId = m.FactoriesId,
             FactoryName = m.Factories.Name,
             FactoryAddress = m.Factories.Address,
             FactoryPhoneNumber = m.Factories.PhoneNumber

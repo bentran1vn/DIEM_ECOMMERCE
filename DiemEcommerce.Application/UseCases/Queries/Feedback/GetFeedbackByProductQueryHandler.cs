@@ -39,7 +39,7 @@ public class GetFeedbackByProductQueryHandler : IQueryHandler<Contract.Services.
 
         // Get all order details containing this product
         var orderDetailIds = await _orderDetailRepository.FindAll(
-                od => od.MatchId == request.MatchId)
+                od => od.MatchesId == request.MatchId)
             .Select(od => od.Id)
             .ToListAsync(cancellationToken);
 
@@ -56,7 +56,7 @@ public class GetFeedbackByProductQueryHandler : IQueryHandler<Contract.Services.
 
         // Get all feedback for these order details
         var feedbackQuery = _feedbackRepository.FindAll(
-                f => orderDetailIds.Contains(f.OrderDetailId) && !f.IsDeleted)
+                f => orderDetailIds.Contains(f.OrderDetailsId) && !f.IsDeleted)
             .Include(f => f.Images)
             .OrderByDescending(f => f.CreatedOnUtc);
 
@@ -68,7 +68,7 @@ public class GetFeedbackByProductQueryHandler : IQueryHandler<Contract.Services.
 
         // Get all customer IDs to load in a single query
         var customerIds = pagedFeedbacks.Items
-            .Select(f => f.CustomerId)
+            .Select(f => f.CustomersId)
             .Distinct()
             .ToList();
 
@@ -82,7 +82,7 @@ public class GetFeedbackByProductQueryHandler : IQueryHandler<Contract.Services.
         {
             // Try to get customer name
             var customerName = "Anonymous";
-            if (customers.TryGetValue(feedback.CustomerId, out var customer))
+            if (customers.TryGetValue(feedback.CustomersId, out var customer))
             {
                 customerName = $"{customer.FirstName} {customer.LastName}";
             }
@@ -90,10 +90,10 @@ public class GetFeedbackByProductQueryHandler : IQueryHandler<Contract.Services.
             return new Responses.FeedbackResponse
             {
                 Id = feedback.Id,
-                OrderDetailId = feedback.OrderDetailId,
+                OrderDetailId = feedback.OrderDetailsId,
                 ProductName = match.Name,
                 ProductImage = match.CoverImages.FirstOrDefault()?.Url ?? "",
-                CustomerId = feedback.CustomerId,
+                CustomerId = feedback.CustomersId,
                 CustomerName = customerName,
                 Rating = feedback.Rating,
                 Comment = feedback.Comment,

@@ -21,9 +21,6 @@ public class DeleteFactoryCommandHandler : ICommandHandler<Contract.Services.Fac
         
         if(isExist == null || isExist.IsDeleted)
             return Result.Failure(new Error("404", "Factory not found"));
-
-        if (isExist.UserId != request.UserId)
-            return Result.Failure(new Error("403", "You are not authorized to delete this factory"));
         
         return Result.Success("Factory deleted successfully");
     }

@@ -56,7 +56,7 @@ public class TransactionService : ITransactionService
             Description = description,
             TransactionType = "Transfer",
             TransactionStatus = "Success",
-            OrderId = orderId
+            OrdersId = orderId
         };
 
         // Update sender and receiver balance
@@ -99,7 +99,7 @@ public class TransactionService : ITransactionService
         CancellationToken cancellationToken = default)
     {
         var transactions = await _transactionRepository.FindAll(
-                t => t.OrderId == orderId)
+                t => t.OrdersId == orderId)
             .ToListAsync(cancellationToken);
 
         return Result.Success(transactions);

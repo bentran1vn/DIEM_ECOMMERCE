@@ -25,7 +25,7 @@ public class DeleteFeedbackCommandHandler : ICommandHandler<Contract.Services.Fe
     {
         // Validate feedback exists and belongs to the customer
         var feedback = await _feedbackRepository.FindAll(
-                f => f.Id == request.FeedbackId && f.CustomerId == request.CustomerId && !f.IsDeleted)
+                f => f.Id == request.FeedbackId && f.CustomersId == request.CustomerId && !f.IsDeleted)
             .FirstOrDefaultAsync(cancellationToken);
 
         if (feedback == null)
@@ -35,7 +35,7 @@ public class DeleteFeedbackCommandHandler : ICommandHandler<Contract.Services.Fe
 
         // Get all associated media for removal
         var feedbackMedia = await _feedbackMediaRepository.FindAll(
-                fm => fm.FeedbackId == request.FeedbackId)
+                fm => fm.FeedbacksId == request.FeedbackId)
             .ToListAsync(cancellationToken);
 
         // Remove the feedback media first (one-to-many relationship)

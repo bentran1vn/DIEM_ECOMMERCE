@@ -48,7 +48,7 @@ public class CreateOrderCommandHandler : ICommandHandler<Contract.Services.Order
         }
 
         // Get customer user to handle transactions if using wallet balance
-        var customerUser = await _userRepository.FindAll(u => u.CustomerId == request.CustomerId)
+        var customerUser = await _userRepository.FindAll(u => u.CustomersId == request.CustomerId)
             .FirstOrDefaultAsync(cancellationToken);
         
         if (customerUser == null)
@@ -70,12 +70,12 @@ public class CreateOrderCommandHandler : ICommandHandler<Contract.Services.Order
                     new Error("404", $"Match with ID {item.MatchId} not found"));
             }
 
-            if (!orderItemsByFactory.ContainsKey(match.FactoryId))
+            if (!orderItemsByFactory.ContainsKey(match.FactoriesId))
             {
-                orderItemsByFactory[match.FactoryId] = new List<(Contract.Services.Order.Commands.OrderItemDto, Matches)>();
+                orderItemsByFactory[match.FactoriesId] = new List<(Contract.Services.Order.Commands.OrderItemDto, Matches)>();
             }
 
-            orderItemsByFactory[match.FactoryId].Add((item, match));
+            orderItemsByFactory[match.FactoriesId].Add((item, match));
             totalOrderPrice += item.Price * item.Quantity;
         }
 
@@ -98,7 +98,7 @@ public class CreateOrderCommandHandler : ICommandHandler<Contract.Services.Order
         var order = new Orders
         {
             Id = Guid.NewGuid(),
-            CustomerId = request.CustomerId,
+            CustomersId = request.CustomerId,
             Address = request.Address,
             Phone = request.Phone,
             Email = request.Email,
@@ -122,8 +122,8 @@ public class CreateOrderCommandHandler : ICommandHandler<Contract.Services.Order
                 var orderDetail = new OrderDetails
                 {
                     Id = Guid.NewGuid(),
-                    OrderId = order.Id,
-                    MatchId = item.MatchId,
+                    OrdersId = order.Id,
+                    MatchesId = item.MatchId,
                     Quantity = item.Quantity,
                     Price = item.Price,
                     Discount = 0, // No discount by default
@@ -146,7 +146,7 @@ public class CreateOrderCommandHandler : ICommandHandler<Contract.Services.Order
                 var factoryTotal = items.Sum(i => i.Item.Price * i.Item.Quantity);
                 
                 // Get factory owner user
-                var factoryOwnerUser = await _userRepository.FindAll(u => u.FactoryId == factoryId)
+                var factoryOwnerUser = await _factoryRepository.FindAll(u => u.Id == factoryId)
                     .FirstOrDefaultAsync(cancellationToken);
                 
                 if (factoryOwnerUser == null)
@@ -178,7 +178,7 @@ public class CreateOrderCommandHandler : ICommandHandler<Contract.Services.Order
         var response = new Responses.OrderResponse
         {
             Id = order.Id,
-            CustomerId = order.CustomerId,
+            CustomerId = order.CustomersId,
             CustomerName = $"{customerUser.FirstName} {customerUser.LastName}",
             Address = order.Address,
             Phone = order.Phone,

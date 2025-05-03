@@ -42,7 +42,7 @@ public class GetOrderWithTransactionQueryHandler : IQueryHandler<Contract.Servic
         // Get order with customer
         var order = await _orderRepository.FindAll(
                 o => o.Id == request.OrderId && !o.IsDeleted,
-                o => o.Customer)
+                o => o.Customers)
             .FirstOrDefaultAsync(cancellationToken);
 
         if (order == null)
@@ -51,7 +51,7 @@ public class GetOrderWithTransactionQueryHandler : IQueryHandler<Contract.Servic
         }
 
         // Get customer user
-        var customerUser = await _userRepository.FindAll(u => u.CustomerId == order.CustomerId)
+        var customerUser = await _userRepository.FindAll(u => u.CustomersId == order.CustomersId)
             .FirstOrDefaultAsync(cancellationToken);
 
         if (customerUser == null)
@@ -61,20 +61,20 @@ public class GetOrderWithTransactionQueryHandler : IQueryHandler<Contract.Servic
 
         // Get order details with matches
         var orderDetails = await _orderDetailRepository.FindAll(
-                od => od.OrderId == order.Id,
-                od => od.Match)
+                od => od.OrdersId == order.Id,
+                od => od.Matches)
             .ToListAsync(cancellationToken);
 
         // Check if each order detail has feedback
         var orderDetailIds = orderDetails.Select(od => od.Id).ToList();
-        var feedbacks = await _feedbackRepository.FindAll(f => orderDetailIds.Contains(f.OrderDetailId))
+        var feedbacks = await _feedbackRepository.FindAll(f => orderDetailIds.Contains(f.OrderDetailsId))
             .ToListAsync(cancellationToken);
 
-        var feedbackOrderDetailIds = feedbacks.Select(f => f.OrderDetailId).ToHashSet();
+        var feedbackOrderDetailIds = feedbacks.Select(f => f.OrderDetailsId).ToHashSet();
 
         // Get all transactions related to this order
         var transactions = await _transactionRepository.FindAll(
-                t => t.OrderId == order.Id)
+                t => t.OrdersId == order.Id)
             .ToListAsync(cancellationToken);
 
         // Get all user IDs involved in transactions
@@ -92,7 +92,7 @@ public class GetOrderWithTransactionQueryHandler : IQueryHandler<Contract.Servic
         var response = new Responses.OrderTransactionResponse
         {
             Id = order.Id,
-            CustomerId = order.CustomerId,
+            CustomerId = order.CustomersId,
             CustomerName = $"{customerUser.FirstName} {customerUser.LastName}",
             Address = order.Address,
             Phone = order.Phone,
@@ -108,7 +108,7 @@ public class GetOrderWithTransactionQueryHandler : IQueryHandler<Contract.Servic
 
         // Get all factory IDs from the order details
         var factoryIds = orderDetails
-            .Select(od => od.Match.FactoryId)
+            .Select(od => od.Matches.FactoriesId)
             .Distinct()
             .ToList();
 
@@ -120,8 +120,8 @@ public class GetOrderWithTransactionQueryHandler : IQueryHandler<Contract.Servic
         // Map order details to response
         foreach (var detail in orderDetails)
         {
-            var match = detail.Match;
-            var factory = factories.GetValueOrDefault(match.FactoryId);
+            var match = detail.Matches;
+            var factory = factories.GetValueOrDefault(match.FactoriesId);
             
             if (factory == null)
             {
@@ -134,7 +134,7 @@ public class GetOrderWithTransactionQueryHandler : IQueryHandler<Contract.Servic
             var orderItemResponse = new Responses.OrderItemResponse
             {
                 Id = detail.Id,
-                MatchId = detail.MatchId,
+                MatchId = detail.MatchesId,
                 MatchName = match.Name,
                 MatchImageUrl = matchImage,
                 FactoryId = factory.Id,

@@ -39,8 +39,8 @@ public class CreateFeedbackCommandHandler : ICommandHandler<Contract.Services.Fe
         // Validate order detail exists
         var orderDetail = await _orderDetailRepository.FindAll(
                 od => od.Id == request.OrderDetailId,
-                od => od.Match,
-                od => od.Order)
+                od => od.Matches,
+                od => od.Orders)
             .FirstOrDefaultAsync(cancellationToken);
         
         if (orderDetail == null)
@@ -49,20 +49,20 @@ public class CreateFeedbackCommandHandler : ICommandHandler<Contract.Services.Fe
         }
 
         // Validate customer owns the order
-        if (orderDetail.Order.CustomerId != request.CustomerId)
+        if (orderDetail.Orders.CustomersId != request.CustomerId)
         {
             return Result.Failure<Responses.FeedbackResponse>(new Error("403", "You are not authorized to leave feedback for this order"));
         }
 
         // Validate order is delivered
-        if (orderDetail.Order.Status != 4) // Delivered
+        if (orderDetail.Orders.Status != 4) // Delivered
         {
             return Result.Failure<Responses.FeedbackResponse>(new Error("400", "Cannot leave feedback for orders that have not been delivered"));
         }
 
         // Check if feedback already exists for this order detail
         var existingFeedback = await _feedbackRepository.FindAll(
-                f => f.OrderDetailId == request.OrderDetailId)
+                f => f.OrderDetailsId == request.OrderDetailId)
             .AnyAsync(cancellationToken);
         
         if (existingFeedback)
@@ -80,8 +80,8 @@ public class CreateFeedbackCommandHandler : ICommandHandler<Contract.Services.Fe
         var feedback = new Feedbacks
         {
             Id = Guid.NewGuid(),
-            OrderDetailId = request.OrderDetailId,
-            CustomerId = request.CustomerId,
+            OrderDetailsId = request.OrderDetailId,
+            CustomersId = request.CustomerId,
             Rating = request.Rating,
             Comment = request.Comment,
         };
@@ -104,7 +104,7 @@ public class CreateFeedbackCommandHandler : ICommandHandler<Contract.Services.Fe
                         var media = new FeedbackMedias
                         {
                             Id = Guid.NewGuid(),
-                            FeedbackId = feedback.Id,
+                            FeedbacksId = feedback.Id,
                             Url = imageUrl
                         };
                     
@@ -125,17 +125,17 @@ public class CreateFeedbackCommandHandler : ICommandHandler<Contract.Services.Fe
         }
 
         // Get customer name
-        var customer = await _userRepository.FindAll(u => u.CustomerId == request.CustomerId)
+        var customer = await _userRepository.FindAll(u => u.CustomersId == request.CustomerId)
             .FirstOrDefaultAsync(cancellationToken);
 
         // Map to response
         var response = new Responses.FeedbackResponse
         {
             Id = feedback.Id,
-            OrderDetailId = feedback.OrderDetailId,
-            ProductName = orderDetail.Match.Name,
-            ProductImage = orderDetail.Match.CoverImages.FirstOrDefault()?.Url ?? "",
-            CustomerId = feedback.CustomerId,
+            OrderDetailId = feedback.OrderDetailsId,
+            ProductName = orderDetail.Matches.Name,
+            ProductImage = orderDetail.Matches.CoverImages.FirstOrDefault()?.Url ?? "",
+            CustomerId = feedback.CustomersId,
             CustomerName = customer != null ? $"{customer.FirstName} {customer.LastName}" : "Anonymous",
             Rating = feedback.Rating,
             Comment = feedback.Comment,

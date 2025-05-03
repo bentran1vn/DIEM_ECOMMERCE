@@ -36,7 +36,7 @@ public class UpdateMatchCommandHandler: ICommandHandler<Contract.Services.Match.
         }
 
         // Validate factory authorization
-        if (match.FactoryId != request.FactoryId)
+        if (match.FactoriesId != request.FactoryId)
         {
             return Result.Failure(new Error("403", "You are not authorized to update this match"));
         }
@@ -51,7 +51,7 @@ public class UpdateMatchCommandHandler: ICommandHandler<Contract.Services.Match.
         // Check if match with same name already exists for this factory (but different id)
         var existingMatch = await _matchRepository.FindAll(
                 m => m.Name.ToLower() == request.Name.Trim().ToLower() && 
-                     m.FactoryId == request.FactoryId && 
+                     m.FactoriesId == request.FactoryId && 
                      m.Id != request.Id &&
                      !m.IsDeleted)
             .FirstOrDefaultAsync(cancellationToken);
@@ -95,7 +95,7 @@ public class UpdateMatchCommandHandler: ICommandHandler<Contract.Services.Match.
             var medias = coverImageUrls.Select(x => new MatchMedias
             {
                 Id = Guid.NewGuid(),
-                MatchId = match.Id,
+                MatchesId = match.Id,
                 Url = x,
             });
         
@@ -104,7 +104,7 @@ public class UpdateMatchCommandHandler: ICommandHandler<Contract.Services.Match.
         
         match.Name = request.Name.Trim();
         match.Description = request.Description.Trim();
-        match.CategoryId = request.CategoryId;
+        match.CategoriesId = request.CategoryId;
         
         return Result.Success("Match updated successfully");
     }

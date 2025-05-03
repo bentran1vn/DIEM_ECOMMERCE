@@ -1,4 +1,5 @@
 using Carter;
+using DiemEcommerce.Contract.Constant.SystemRoles;
 using DiemEcommerce.Contract.Services.Match;
 using DiemEcommerce.Presentation.Abstractions;
 using MediatR;
@@ -20,9 +21,14 @@ public class MatchApi: ApiEndpoint, ICarterModule
         
         group1.MapGet("", GetMatchesV1);
         group1.MapGet("{id}", GetMatchesByIdV1);
-        group1.MapPost("", CreateMatchV1);
-        group1.MapPut("{id}", UpdateMatchV1);
-        group1.MapDelete("{id}", DeleteMatchV1);
+        group1.MapPost("", CreateMatchV1)
+            .DisableAntiforgery()
+            .RequireAuthorization(RoleNames.Factory);
+        group1.MapPut("{id}", UpdateMatchV1)
+            .DisableAntiforgery()
+            .RequireAuthorization(RoleNames.Factory);
+        group1.MapDelete("{id}", DeleteMatchV1)
+            .RequireAuthorization(RoleNames.Factory);
     }
     
     public static async Task<IResult> GetMatchesV1(ISender sender, int pageIndex = 1, int pageSize = 10,

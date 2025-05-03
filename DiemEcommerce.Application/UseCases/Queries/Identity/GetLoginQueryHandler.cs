@@ -2,6 +2,7 @@ using System.Security.Claims;
 using DiemEcommerce.Application.Abstractions;
 using DiemEcommerce.Contract.Abstractions.Messages;
 using DiemEcommerce.Contract.Abstractions.Shared;
+using DiemEcommerce.Contract.Constant.SystemRoles;
 using DiemEcommerce.Contract.Services.Identity;
 using DiemEcommerce.Domain.Abstractions.Repositories;
 using DiemEcommerce.Domain.Entities;
@@ -31,7 +32,7 @@ public class GetLoginQueryHandler : IQueryHandler<Query.Login, Response.Authenti
         var user =
             await _userRepository.FindSingleAsync(x =>
                 x.Email.Equals(request.EmailOrUserName) || x.Username.Equals(request.EmailOrUserName)
-                , cancellationToken);
+                , cancellationToken, x => x.Factories,  x => x.Roles);
         
             //, x => x.Subscription
         
@@ -64,6 +65,11 @@ public class GetLoginQueryHandler : IQueryHandler<Query.Login, Response.Authenti
         // {
         //     claims.Add(new Claim("VendorId", user.VendorId.ToString() ?? null));
         // }
+        
+        if (user.Roles.Name.Equals(RoleNames.Factory) && user.Factories?.Id != null)
+        {
+            claims.Add(new Claim("FactoryId", user.Factories.Id.ToString()));
+        }
 
         var accessToken = _jwtTokenService.GenerateAccessToken(claims);
         var refreshToken = _jwtTokenService.GenerateRefreshToken();
