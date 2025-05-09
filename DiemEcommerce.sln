@@ -14,6 +14,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiemEcommerce.Presentation"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiemEcommerce.Infrastructure", "DiemEcommerce.Infrastructure\DiemEcommerce.Infrastructure.csproj", "{1B105428-14B7-4F30-A806-F0434AE0F07A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiemEcommerce.Domain.Tests", "DiemEcommerce.Domain.Tests\DiemEcommerce.Domain.Tests.csproj", "{1D6F13DB-B635-48A9-86A2-3DFF4082405B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiemEcommerce.Application.Tests", "DiemEcommerce.Application.Tests\DiemEcommerce.Application.Tests.csproj", "{070540E9-64BF-4398-B01B-D6E1142F41B2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -48,5 +52,13 @@ Global
 		{1B105428-14B7-4F30-A806-F0434AE0F07A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1B105428-14B7-4F30-A806-F0434AE0F07A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1B105428-14B7-4F30-A806-F0434AE0F07A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1D6F13DB-B635-48A9-86A2-3DFF4082405B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D6F13DB-B635-48A9-86A2-3DFF4082405B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D6F13DB-B635-48A9-86A2-3DFF4082405B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D6F13DB-B635-48A9-86A2-3DFF4082405B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{070540E9-64BF-4398-B01B-D6E1142F41B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{070540E9-64BF-4398-B01B-D6E1142F41B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{070540E9-64BF-4398-B01B-D6E1142F41B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{070540E9-64BF-4398-B01B-D6E1142F41B2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
