@@ -47,6 +47,8 @@ public class GetAllMatchesQueryHandler : IQueryHandler<Contract.Services.Match.Q
             Id = m.Id,
             Name = m.Name,
             Description = m.Description,
+            Price = m.Price,
+            Quantity = m.Quantity,
             CoverImages = m.CoverImages.Select(x => new Responses.MatchMedia
             {
                 Id = x.Id,
