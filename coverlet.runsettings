@@ -5,15 +5,36 @@
       <DataCollector friendlyName="XPlat code coverage">
         <Configuration>
           <Format>cobertura</Format>
+          
+          <!-- Multiple patterns to catch all migrations -->
           <Exclude>
+            [DiemEcommerce.Persistence]DiemEcommerce.Persistence.Migrations*
+            [DiemEcommerce.Persistence]*.Migrations.*
             [*]*Migrations*
-            [*.Persistence]*Migrations*
-            [DiemEcommerce.Persistence]*Migrations*
+            [*Tests*]*
+            [*.Tests]*
           </Exclude>
+          
+          <!-- File-based exclusions -->
           <ExcludeByFile>
             **/Migrations/**/*.cs
             **/Migrations/*.cs
+            **/*Migration*.cs
+            **/DiemEcommerce.Persistence/Migrations/**
           </ExcludeByFile>
+          
+          <!-- Exclude by attribute -->
+          <ExcludeByAttribute>
+            Obsolete
+            GeneratedCode
+            CompilerGenerated
+            ExcludeFromCodeCoverageAttribute
+          </ExcludeByAttribute>
+          
+          <DeterministicReport>true</DeterministicReport>
+          <SingleHit>false</SingleHit>
+          <UseSourceLink>true</UseSourceLink>
+          <IncludeTestAssembly>false</IncludeTestAssembly>
         </Configuration>
       </DataCollector>
     </DataCollectors>

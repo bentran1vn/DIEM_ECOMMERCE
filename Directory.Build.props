@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project>
+    <!-- Global properties for all projects in the solution -->
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+    </PropertyGroup>
+
+    <!-- Code coverage settings for all projects -->
+    <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+        <CollectCoverage Condition="'$(CollectCoverage)' == ''">true</CollectCoverage>
+        <CoverletOutput>./coverage/</CoverletOutput>
+        <CoverletOutputFormat>cobertura</CoverletOutputFormat>
+
+        <!-- Fixed Exclude syntax for Coverlet -->
+        <Exclude>[DiemEcommerce.Persistence]DiemEcommerce.Persistence.Migrations*;[*Tests*]*;[*.Tests]*</Exclude>
+
+        <!-- Fixed ExcludeByFile syntax -->
+        <ExcludeByFile>**/Migrations/**/*.cs</ExcludeByFile>
+    </PropertyGroup>
+</Project>
