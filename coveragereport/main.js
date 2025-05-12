@@ -223,7 +223,6 @@ var assemblies = [
       { "name": "DiemEcommerce.Application.DependencyInjection.Extensions.QrContentParser", "rp": "DiemEcommerce.Application_QrContentParser.html", "cl": 0, "ucl": 26, "cal": 26, "tl": 61, "cb": 0, "tb": 6, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "DiemEcommerce.Application.DependencyInjection.Extensions.QrParseResult", "rp": "DiemEcommerce.Application_QrParseResult.html", "cl": 0, "ucl": 2, "cal": 2, "tl": 61, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "DiemEcommerce.Application.DependencyInjection.Extensions.ServiceCollectionExtensions", "rp": "DiemEcommerce.Application_ServiceCollectionExtensions.html", "cl": 0, "ucl": 10, "cal": 10, "tl": 23, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "DiemEcommerce.Application.Exceptions.OrderExtensions", "rp": "DiemEcommerce.Application_OrderExtensions.html", "cl": 0, "ucl": 19, "cal": 19, "tl": 42, "cb": 0, "tb": 4, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "DiemEcommerce.Application.Exceptions.ValidationError", "rp": "DiemEcommerce.Application_ValidationError.html", "cl": 0, "ucl": 1, "cal": 1, "tl": 14, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "DiemEcommerce.Application.Exceptions.ValidationException", "rp": "DiemEcommerce.Application_ValidationException.html", "cl": 0, "ucl": 3, "cal": 3, "tl": 14, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "DiemEcommerce.Application.Tests.Helpers.TestAsyncEnumerable<T>", "rp": "DiemEcommerce.Application_TestAsyncEnumerable_1.html", "cl": 0, "ucl": 8, "cal": 8, "tl": 100, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
@@ -235,9 +234,6 @@ var assemblies = [
       { "name": "DiemEcommerce.Application.UseCases.Commands.Factory.CreateFactoryCommandHandler", "rp": "DiemEcommerce.Application_CreateFactoryCommandHandler.html", "cl": 0, "ucl": 35, "cal": 35, "tl": 63, "cb": 0, "tb": 4, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "DiemEcommerce.Application.UseCases.Commands.Factory.DeleteFactoryCommandHandler", "rp": "DiemEcommerce.Application_DeleteFactoryCommandHandler.html", "cl": 0, "ucl": 10, "cal": 10, "tl": 27, "cb": 0, "tb": 4, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "DiemEcommerce.Application.UseCases.Commands.Factory.UpdateFactoryCommandHandler", "rp": "DiemEcommerce.Application_UpdateFactoryCommandHandler.html", "cl": 0, "ucl": 29, "cal": 29, "tl": 52, "cb": 0, "tb": 8, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "DiemEcommerce.Application.UseCases.Commands.Feedback.CreateFeedbackCommandHandler", "rp": "DiemEcommerce.Application_CreateFeedbackCommandHandler.html", "cl": 0, "ucl": 89, "cal": 89, "tl": 148, "cb": 0, "tb": 26, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "DiemEcommerce.Application.UseCases.Commands.Feedback.DeleteFeedbackCommandHandler", "rp": "DiemEcommerce.Application_DeleteFeedbackCommandHandler.html", "cl": 0, "ucl": 24, "cal": 24, "tl": 52, "cb": 0, "tb": 4, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "DiemEcommerce.Application.UseCases.Commands.Feedback.UpdateFeedbackCommandHandler", "rp": "DiemEcommerce.Application_UpdateFeedbackCommandHandler.html", "cl": 0, "ucl": 100, "cal": 100, "tl": 155, "cb": 0, "tb": 34, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "DiemEcommerce.Application.UseCases.Commands.Identity.ChangePasswordCommandHandler", "rp": "DiemEcommerce.Application_ChangePasswordCommandHandler.html", "cl": 0, "ucl": 18, "cal": 18, "tl": 43, "cb": 0, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "DiemEcommerce.Application.UseCases.Commands.Identity.ForgotPasswordCommandHandler", "rp": "DiemEcommerce.Application_ForgotPasswordCommandHandler.html", "cl": 0, "ucl": 23, "cal": 23, "tl": 51, "cb": 0, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "DiemEcommerce.Application.UseCases.Commands.Identity.LogoutCommandHandler", "rp": "DiemEcommerce.Application_LogoutCommandHandler.html", "cl": 0, "ucl": 8, "cal": 8, "tl": 22, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
@@ -246,15 +242,9 @@ var assemblies = [
       { "name": "DiemEcommerce.Application.UseCases.Commands.Match.CreateMatchCommandHandler", "rp": "DiemEcommerce.Application_CreateMatchCommandHandler.html", "cl": 53, "ucl": 4, "cal": 57, "tl": 97, "cb": 13, "tb": 16, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "DiemEcommerce.Application.UseCases.Commands.Match.DeleteMatchCommandHandler", "rp": "DiemEcommerce.Application_DeleteMatchCommandHandler.html", "cl": 0, "ucl": 13, "cal": 13, "tl": 33, "cb": 0, "tb": 4, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "DiemEcommerce.Application.UseCases.Commands.Match.UpdateMatchCommandHandler", "rp": "DiemEcommerce.Application_UpdateMatchCommandHandler.html", "cl": 0, "ucl": 70, "cal": 70, "tl": 114, "cb": 0, "tb": 28, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "DiemEcommerce.Application.UseCases.Commands.Order.CancelOrderCommandHandler", "rp": "DiemEcommerce.Application_CancelOrderCommandHandler.html", "cl": 0, "ucl": 11, "cal": 11, "tl": 121, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "DiemEcommerce.Application.UseCases.Commands.Order.CreateOrderCommandHandler", "rp": "DiemEcommerce.Application_CreateOrderCommandHandler.html", "cl": 0, "ucl": 139, "cal": 139, "tl": 196, "cb": 0, "tb": 28, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "DiemEcommerce.Application.UseCases.Commands.Order.CreateSePayOrderCommandHandler", "rp": "DiemEcommerce.Application_CreateSePayOrderCommandHandler.html", "cl": 0, "ucl": 64, "cal": 64, "tl": 99, "cb": 0, "tb": 12, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "DiemEcommerce.Application.UseCases.Queries.Category.GetAllCategoriesQueryHandler", "rp": "DiemEcommerce.Application_GetAllCategoriesQueryHandler.html", "cl": 10, "ucl": 0, "cal": 10, "tl": 28, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "DiemEcommerce.Application.UseCases.Queries.Factory.GetAllFactoriesQueryHandler", "rp": "DiemEcommerce.Application_GetAllFactoriesQueryHandler.html", "cl": 0, "ucl": 19, "cal": 19, "tl": 44, "cb": 0, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "DiemEcommerce.Application.UseCases.Queries.Factory.GetFactoryByIdQueryHandler", "rp": "DiemEcommerce.Application_GetFactoryByIdQueryHandler.html", "cl": 0, "ucl": 15, "cal": 15, "tl": 34, "cb": 0, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "DiemEcommerce.Application.UseCases.Queries.Feedback.GetFeedbackByCustomerQueryHandler", "rp": "DiemEcommerce.Application_GetFeedbackByCustomerQueryHandler.html", "cl": 0, "ucl": 95, "cal": 95, "tl": 139, "cb": 0, "tb": 12, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "DiemEcommerce.Application.UseCases.Queries.Feedback.GetFeedbackByIdQueryHandler", "rp": "DiemEcommerce.Application_GetFeedbackByIdQueryHandler.html", "cl": 0, "ucl": 53, "cal": 53, "tl": 89, "cb": 0, "tb": 10, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "DiemEcommerce.Application.UseCases.Queries.Feedback.GetFeedbackByProductQueryHandler", "rp": "DiemEcommerce.Application_GetFeedbackByProductQueryHandler.html", "cl": 0, "ucl": 77, "cal": 77, "tl": 118, "cb": 0, "tb": 12, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "DiemEcommerce.Application.UseCases.Queries.Identity.GetLoginQueryHandler", "rp": "DiemEcommerce.Application_GetLoginQueryHandler.html", "cl": 0, "ucl": 68, "cal": 68, "tl": 114, "cb": 0, "tb": 20, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "DiemEcommerce.Application.UseCases.Queries.Identity.GetMeHandler", "rp": "DiemEcommerce.Application_GetMeHandler.html", "cl": 0, "ucl": 22, "cal": 22, "tl": 44, "cb": 0, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "DiemEcommerce.Application.UseCases.Queries.Identity.GetTokenQueryHandler", "rp": "DiemEcommerce.Application_GetTokenQueryHandler.html", "cl": 0, "ucl": 25, "cal": 25, "tl": 47, "cb": 0, "tb": 6, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
@@ -262,11 +252,6 @@ var assemblies = [
       { "name": "DiemEcommerce.Application.UseCases.Queries.Match.GetAllMatchesQueryHandler", "rp": "DiemEcommerce.Application_GetAllMatchesQueryHandler.html", "cl": 45, "ucl": 0, "cal": 45, "tl": 73, "cb": 6, "tb": 6, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "DiemEcommerce.Application.UseCases.Queries.Match.GetMatchByFactoryIdQueryHandler", "rp": "DiemEcommerce.Application_GetMatchByFactoryIdQueryHandler.html", "cl": 0, "ucl": 50, "cal": 50, "tl": 82, "cb": 0, "tb": 10, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "DiemEcommerce.Application.UseCases.Queries.Match.GetMatchByIdQueryHandler", "rp": "DiemEcommerce.Application_GetMatchByIdQueryHandler.html", "cl": 42, "ucl": 0, "cal": 42, "tl": 64, "cb": 2, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "DiemEcommerce.Application.UseCases.Queries.Order.GetAllOrdersQueryHandler", "rp": "DiemEcommerce.Application_GetAllOrdersQueryHandler.html", "cl": 0, "ucl": 62, "cal": 62, "tl": 98, "cb": 0, "tb": 52, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "DiemEcommerce.Application.UseCases.Queries.Order.GetCustomerOrdersQueryHandler", "rp": "DiemEcommerce.Application_GetCustomerOrdersQueryHandler.html", "cl": 0, "ucl": 38, "cal": 38, "tl": 70, "cb": 0, "tb": 4, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "DiemEcommerce.Application.UseCases.Queries.Order.GetFactoryOrdersQueryHandler", "rp": "DiemEcommerce.Application_GetFactoryOrdersQueryHandler.html", "cl": 0, "ucl": 91, "cal": 91, "tl": 141, "cb": 0, "tb": 50, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "DiemEcommerce.Application.UseCases.Queries.Order.GetOrderByIdQueryHandler", "rp": "DiemEcommerce.Application_GetOrderByIdQueryHandler.html", "cl": 0, "ucl": 82, "cal": 82, "tl": 131, "cb": 0, "tb": 14, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "DiemEcommerce.Application.UseCases.Queries.Order.GetOrderWithTransactionQueryHandler", "rp": "DiemEcommerce.Application_GetOrderWithTransactionQueryHandler.html", "cl": 0, "ucl": 122, "cal": 122, "tl": 187, "cb": 0, "tb": 22, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
     ]},
   {
     "name": "DiemEcommerce.Contract",
@@ -308,13 +293,6 @@ var assemblies = [
       { "name": "DiemEcommerce.Contract.Services.Match.Validators.CreateMatchCommandValidator", "rp": "DiemEcommerce.Contract_CreateMatchCommandValidator.html", "cl": 0, "ucl": 17, "cal": 17, "tl": 29, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "DiemEcommerce.Contract.Services.Match.Validators.DeleteMatchCommandValidator", "rp": "DiemEcommerce.Contract_DeleteMatchCommandValidator.html", "cl": 0, "ucl": 7, "cal": 7, "tl": 15, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "DiemEcommerce.Contract.Services.Match.Validators.UpdateMatchCommandValidator", "rp": "DiemEcommerce.Contract_UpdateMatchCommandValidator.html", "cl": 0, "ucl": 15, "cal": 15, "tl": 26, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "DiemEcommerce.Contract.Services.Order.Commands", "rp": "DiemEcommerce.Contract_Commands.5.html", "cl": 0, "ucl": 46, "cal": 46, "tl": 75, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "DiemEcommerce.Contract.Services.Order.OrderStatusExtensions", "rp": "DiemEcommerce.Contract_OrderStatusExtensions.html", "cl": 0, "ucl": 12, "cal": 12, "tl": 28, "cb": 0, "tb": 7, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "DiemEcommerce.Contract.Services.Order.Queries", "rp": "DiemEcommerce.Contract_Queries.5.html", "cl": 0, "ucl": 23, "cal": 23, "tl": 39, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "DiemEcommerce.Contract.Services.Order.Responses", "rp": "DiemEcommerce.Contract_Responses.5.html", "cl": 0, "ucl": 45, "cal": 45, "tl": 78, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "DiemEcommerce.Contract.Services.Order.Validators.CancelOrderCommandValidator", "rp": "DiemEcommerce.Contract_CancelOrderCommandValidator.html", "cl": 0, "ucl": 7, "cal": 7, "tl": 15, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "DiemEcommerce.Contract.Services.Order.Validators.CreateOrderCommandValidator", "rp": "DiemEcommerce.Contract_CreateOrderCommandValidator.html", "cl": 0, "ucl": 16, "cal": 16, "tl": 26, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "DiemEcommerce.Contract.Services.Order.Validators.UpdateOrderStatusCommandValidator", "rp": "DiemEcommerce.Contract_UpdateOrderStatusCommandValidator.html", "cl": 0, "ucl": 7, "cal": 7, "tl": 15, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
     ]},
   {
     "name": "DiemEcommerce.Domain",
@@ -378,46 +356,16 @@ var riskHotspotMetrics = [
 
 var riskHotspots = [
   {
-    "assembly": "DiemEcommerce.Application", "class": "DiemEcommerce.Application.UseCases.Commands.Feedback.UpdateFeedbackCommandHandler", "reportPath": "DiemEcommerce.Application_UpdateFeedbackCommandHandler.html", "methodName": "Handle()", "methodShortName": "Handle()", "fileIndex": 0, "line": 35,
-    "metrics": [
-      { "value": 1056, "exceeded": true },
-      { "value": 32, "exceeded": true },
-    ]},
-  {
     "assembly": "DiemEcommerce.Application", "class": "DiemEcommerce.Application.UseCases.Commands.Match.UpdateMatchCommandHandler", "reportPath": "DiemEcommerce.Application_UpdateMatchCommandHandler.html", "methodName": "Handle()", "methodShortName": "Handle()", "fileIndex": 0, "line": 30,
     "metrics": [
       { "value": 812, "exceeded": true },
       { "value": 28, "exceeded": true },
     ]},
   {
-    "assembly": "DiemEcommerce.Application", "class": "DiemEcommerce.Application.UseCases.Commands.Feedback.CreateFeedbackCommandHandler", "reportPath": "DiemEcommerce.Application_CreateFeedbackCommandHandler.html", "methodName": "Handle()", "methodShortName": "Handle()", "fileIndex": 0, "line": 38,
-    "metrics": [
-      { "value": 702, "exceeded": true },
-      { "value": 26, "exceeded": true },
-    ]},
-  {
-    "assembly": "DiemEcommerce.Application", "class": "DiemEcommerce.Application.UseCases.Commands.Order.CreateOrderCommandHandler", "reportPath": "DiemEcommerce.Application_CreateOrderCommandHandler.html", "methodName": "Handle()", "methodShortName": "Handle()", "fileIndex": 0, "line": 37,
-    "metrics": [
-      { "value": 702, "exceeded": true },
-      { "value": 26, "exceeded": true },
-    ]},
-  {
-    "assembly": "DiemEcommerce.Application", "class": "DiemEcommerce.Application.UseCases.Queries.Order.GetOrderWithTransactionQueryHandler", "reportPath": "DiemEcommerce.Application_GetOrderWithTransactionQueryHandler.html", "methodName": "Handle()", "methodShortName": "Handle()", "fileIndex": 0, "line": 41,
-    "metrics": [
-      { "value": 506, "exceeded": true },
-      { "value": 22, "exceeded": true },
-    ]},
-  {
     "assembly": "DiemEcommerce.Application", "class": "DiemEcommerce.Application.UseCases.Queries.Identity.GetLoginQueryHandler", "reportPath": "DiemEcommerce.Application_GetLoginQueryHandler.html", "methodName": "Handle()", "methodShortName": "Handle()", "fileIndex": 0, "line": 30,
     "metrics": [
       { "value": 420, "exceeded": true },
       { "value": 20, "exceeded": true },
-    ]},
-  {
-    "assembly": "DiemEcommerce.Application", "class": "DiemEcommerce.Application.UseCases.Queries.Order.GetOrderByIdQueryHandler", "reportPath": "DiemEcommerce.Application_GetOrderByIdQueryHandler.html", "methodName": "Handle()", "methodShortName": "Handle()", "fileIndex": 0, "line": 37,
-    "metrics": [
-      { "value": 210, "exceeded": true },
-      { "value": 14, "exceeded": false },
     ]},
   {
     "assembly": "DiemEcommerce.Persistence", "class": "DiemEcommerce.Persistence.Interceptors.DeleteAuditableEntitiesInterceptor", "reportPath": "DiemEcommerce.Persistence_DeleteAuditableEntitiesInterceptor.html", "methodName": "SavingChangesAsync(Microsoft.EntityFrameworkCore.Diagnostics.DbContextEventData,Microsoft.EntityFrameworkCore.Diagnostics.InterceptionResult`1<System.Int32>,System.Threading.CancellationToken)", "methodShortName": "SavingChangesAsync(...)", "fileIndex": 0, "line": 13,
@@ -427,18 +375,6 @@ var riskHotspots = [
     ]},
   {
     "assembly": "DiemEcommerce.Application", "class": "DiemEcommerce.Application.Behaviors.ValidationPipelineBehavior<T1, T2>", "reportPath": "DiemEcommerce.Application_ValidationPipelineBehavior_2.html", "methodName": "Handle()", "methodShortName": "Handle()", "fileIndex": 0, "line": 20,
-    "metrics": [
-      { "value": 110, "exceeded": true },
-      { "value": 10, "exceeded": false },
-    ]},
-  {
-    "assembly": "DiemEcommerce.Application", "class": "DiemEcommerce.Application.UseCases.Commands.Order.CreateSePayOrderCommandHandler", "reportPath": "DiemEcommerce.Application_CreateSePayOrderCommandHandler.html", "methodName": "Handle()", "methodShortName": "Handle()", "fileIndex": 0, "line": 28,
-    "metrics": [
-      { "value": 110, "exceeded": true },
-      { "value": 10, "exceeded": false },
-    ]},
-  {
-    "assembly": "DiemEcommerce.Application", "class": "DiemEcommerce.Application.UseCases.Queries.Feedback.GetFeedbackByIdQueryHandler", "reportPath": "DiemEcommerce.Application_GetFeedbackByIdQueryHandler.html", "methodName": "Handle()", "methodShortName": "Handle()", "fileIndex": 0, "line": 29,
     "metrics": [
       { "value": 110, "exceeded": true },
       { "value": 10, "exceeded": false },
@@ -468,12 +404,6 @@ var riskHotspots = [
       { "value": 8, "exceeded": false },
     ]},
   {
-    "assembly": "DiemEcommerce.Contract", "class": "DiemEcommerce.Contract.Services.Order.OrderStatusExtensions", "reportPath": "DiemEcommerce.Contract_OrderStatusExtensions.html", "methodName": "ToDisplayString(DiemEcommerce.Contract.Services.Order.OrderStatus)", "methodShortName": "ToDisplayString(...)", "fileIndex": 0, "line": 16,
-    "metrics": [
-      { "value": 56, "exceeded": true },
-      { "value": 7, "exceeded": false },
-    ]},
-  {
     "assembly": "DiemEcommerce.Application", "class": "DiemEcommerce.Application.Behaviors.CachingPipelineBehaviorCachingBehavior<T1, T2>", "reportPath": "DiemEcommerce.Application_CachingPipelineBehaviorCachingBehavior_2.html", "methodName": "GetResponseAndAddToCache()", "methodShortName": "GetResponseAndAddToCache()", "fileIndex": 0, "line": 21,
     "metrics": [
       { "value": 42, "exceeded": true },
@@ -498,19 +428,7 @@ var riskHotspots = [
       { "value": 6, "exceeded": false },
     ]},
   {
-    "assembly": "DiemEcommerce.Application", "class": "DiemEcommerce.Application.UseCases.Queries.Feedback.GetFeedbackByProductQueryHandler", "reportPath": "DiemEcommerce.Application_GetFeedbackByProductQueryHandler.html", "methodName": "Handle()", "methodShortName": "Handle()", "fileIndex": 0, "line": 32,
-    "metrics": [
-      { "value": 42, "exceeded": true },
-      { "value": 6, "exceeded": false },
-    ]},
-  {
     "assembly": "DiemEcommerce.Application", "class": "DiemEcommerce.Application.UseCases.Queries.Identity.GetTokenQueryHandler", "reportPath": "DiemEcommerce.Application_GetTokenQueryHandler.html", "methodName": "Handle()", "methodShortName": "Handle()", "fileIndex": 0, "line": 20,
-    "metrics": [
-      { "value": 42, "exceeded": true },
-      { "value": 6, "exceeded": false },
-    ]},
-  {
-    "assembly": "DiemEcommerce.Application", "class": "DiemEcommerce.Application.UseCases.Queries.Order.GetFactoryOrdersQueryHandler", "reportPath": "DiemEcommerce.Application_GetFactoryOrdersQueryHandler.html", "methodName": "Handle()", "methodShortName": "Handle()", "fileIndex": 0, "line": 31,
     "metrics": [
       { "value": 42, "exceeded": true },
       { "value": 6, "exceeded": false },
