@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<RunSettings>
+  <DataCollectionRunSettings>
+    <DataCollectors>
+      <DataCollector friendlyName="XPlat code coverage">
+        <Configuration>
+          <Format>cobertura</Format>
+          <Exclude>
+            [*]*Migrations*
+            [*.Persistence]*Migrations*
+            [DiemEcommerce.Persistence]*Migrations*
+          </Exclude>
+          <ExcludeByFile>
+            **/Migrations/**/*.cs
+            **/Migrations/*.cs
+          </ExcludeByFile>
+        </Configuration>
+      </DataCollector>
+    </DataCollectors>
+  </DataCollectionRunSettings>
+</RunSettings>
