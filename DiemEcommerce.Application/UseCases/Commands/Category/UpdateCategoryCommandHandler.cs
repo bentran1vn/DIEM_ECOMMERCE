@@ -20,7 +20,7 @@ public class UpdateCategoryCommandHandler: ICommandHandler<Contract.Services.Cat
         var isExist = await _categoryRepository.FindByIdAsync(request.Id, cancellationToken);
         if (isExist == null)
         {
-            return Result.Failure(new Error("400", "Parent category not found"));
+            return Result.Failure(new Error("400", "Category not found"));
         }
         
         var isExistName = await _categoryRepository.FindSingleAsync(
@@ -28,7 +28,7 @@ public class UpdateCategoryCommandHandler: ICommandHandler<Contract.Services.Cat
                  !x.IsParent
             , cancellationToken);
         
-        if (isExistName == null)
+        if (isExistName != null)
         {
             return Result.Failure(new Error("400", "Exist category name"));
         }
