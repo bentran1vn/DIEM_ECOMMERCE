@@ -23,6 +23,8 @@ public class Commands
             Description = body.Description;
             CoverImages = body.CoverImages;
             CategoryId = body.CategoryId;
+            Quantity = body.Quantity;
+            Price = body.Price;
             FactoryId = factoryId;
         }
 
@@ -34,7 +36,9 @@ public class Commands
         public Guid Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public ICollection<Guid> DeleteImages { get; set; }
+        public string Price { get; set; }
+        public string Quantity { get; set; }
+        public ICollection<Guid>? DeleteImages { get; set; }
         public IFormFileCollection? NewImages { get; set; }
         public Guid CategoryId { get; set; } 
     }
@@ -47,6 +51,8 @@ public class Commands
             Id = body.Id;
             Name = body.Name;
             Description = body.Description;
+            Price = body.Price;
+            Quantity = body.Quantity;
             DeleteImages = body.DeleteImages;
             NewImages = body.NewImages;
             CategoryId = body.CategoryId;

@@ -26,6 +26,7 @@ public class AuthApi : ApiEndpoint, ICarterModule
         group1.MapGet("me", GetMeV1).RequireAuthorization();;
         group1.MapPost("login", LoginV1);
         group1.MapPost("refresh_token", RefreshTokenV1);
+        group1.MapGet("", GetUserV1);
         group1.MapPost("register", RegisterV1);
         group1.MapPost("forgot_password", ForgotPasswordV1);
         group1.MapPost("verify_code", VerifyCodeV1);
@@ -39,6 +40,17 @@ public class AuthApi : ApiEndpoint, ICarterModule
         Guid.TryParse(userId, out var guidUserId);
         
         var result = await sender.Send(new CommandV1.Query.GetMe(guidUserId));
+        
+        if (result.IsFailure)
+            return HandlerFailure(result);
+
+        return Results.Ok(result);
+    }
+    
+    public static async Task<IResult> GetUserV1(ISender sender, int pageIndex = 1, int pageSize = 10,
+        string? searchTerm = null)
+    {
+        var result = await sender.Send(new CommandV1.Query.GetUsers(searchTerm, pageIndex, pageSize));
         
         if (result.IsFailure)
             return HandlerFailure(result);

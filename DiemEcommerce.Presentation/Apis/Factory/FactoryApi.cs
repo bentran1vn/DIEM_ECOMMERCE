@@ -106,9 +106,10 @@ public class FactoryApi : ApiEndpoint, ICarterModule
         return Results.Ok(result);
     }
     
-    public static async Task<IResult> GetMatchesByFactoryIdV1(ISender sender, Guid id)
+    public static async Task<IResult> GetMatchesByFactoryIdV1(ISender sender, Guid id, int pageIndex = 1, int pageSize = 10,
+        string? searchTerm = null, Guid[]? categoryIds = null)
     {
-        var result = await sender.Send(new Contract.Services.Match.Queries.GetMatchByFactoryIdQuery(id));
+        var result = await sender.Send(new Contract.Services.Match.Queries.GetMatchByFactoryIdQuery(id, categoryIds?.ToList(), searchTerm, pageIndex, pageSize));
         
         if (result.IsFailure)
             return HandlerFailure(result);

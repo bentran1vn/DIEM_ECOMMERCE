@@ -22,7 +22,7 @@ public class CreateCategoryCommandHandler: ICommandHandler<Contract.Services.Cat
                  !x.IsParent
             , cancellationToken);
         
-        if (isExistName == null)
+        if (isExistName != null)
         {
             return Result.Failure(new Error("400", "Exist category name"));
         }

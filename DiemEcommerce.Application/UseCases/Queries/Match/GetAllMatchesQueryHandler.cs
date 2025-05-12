@@ -49,7 +49,7 @@ public class GetAllMatchesQueryHandler : IQueryHandler<Contract.Services.Match.Q
             Description = m.Description,
             Price = m.Price,
             Quantity = m.Quantity,
-            CoverImages = m.CoverImages.Select(x => new Responses.MatchMedia
+            CoverImages = m.CoverImages.Where(x => !x.IsDeleted).Select(x => new Responses.MatchMedia
             {
                 Id = x.Id,
                 Url = x.Url

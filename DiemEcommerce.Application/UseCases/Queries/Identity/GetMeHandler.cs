@@ -35,7 +35,7 @@ public class GetMeHandler : IQueryHandler<Query.GetMe, Response.GetMe>
             Username = user.Username,
             Firstname = user.FirstName,
             Lastname = user.LastName,
-            Phonenumber = user.PhoneNumber,
+            PhoneNumber = user.PhoneNumber,
             CreatedOnUtc = user.CreatedOnUtc
         };
         
