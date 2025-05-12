@@ -33,6 +33,7 @@ public class GetMatchByIdQueryHandler : IQueryHandler<Contract.Services.Match.Qu
         // Map to response
         var response = new Responses.MatchDetailResponse
         {
+            Id = match.Id,
             Name = match.Name,
             Description = match.Description,
             Price = match.Price,
