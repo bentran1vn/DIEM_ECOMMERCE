@@ -62,7 +62,7 @@ public class UpdateMatchCommandHandler: ICommandHandler<Contract.Services.Match.
         }
         
         // Remove images specified for deletion
-        if (request.DeleteImages.Any())
+        if (request.DeleteImages != null && request.DeleteImages.Any())
         {
             var mediaToDeletes = await _matchMediaRepository
                 .FindAll(x => request.DeleteImages.Contains(x.Id)).ToListAsync(cancellationToken);
@@ -104,6 +104,9 @@ public class UpdateMatchCommandHandler: ICommandHandler<Contract.Services.Match.
         
         match.Name = request.Name.Trim();
         match.Description = request.Description.Trim();
+        match.CategoriesId = request.CategoryId;
+        match.Quantity = int.Parse(request.Quantity);
+        match.Price = int.Parse(request.Price);
         match.CategoriesId = request.CategoryId;
         
         return Result.Success("Match updated successfully");

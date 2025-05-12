@@ -30,16 +30,35 @@ public class GetMatchByFactoryIdQueryHandler: IQueryHandler<Contract.Services.Ma
 
         // Get matches by factory id
         var query = _matchRepository.FindAll(
-                m => m.FactoriesId == request.Id && !m.IsDeleted,
-                m => m.Categories)
-            .Include(m => m.Factories);
+            m => m.FactoriesId == request.Id && !m.IsDeleted,
+            m => m.Categories);
+        
+        // Apply category filter if provided
+        if (request.CategoryId != null && request.CategoryId.Any())
+        {
+            query = query.Where(m => request.CategoryId.Contains(m.CategoriesId));
+        }
+
+        // Apply search term filter if provided
+        if (!string.IsNullOrWhiteSpace(request.SearchTerm))
+        {
+            var searchTerm = request.SearchTerm.Trim().ToLower();
+            query = query.Where(m => 
+                m.Name.ToLower().Contains(searchTerm) || 
+                m.Description.ToLower().Contains(searchTerm));
+        }
+        
+        query = query.Include(m => m.Factories);
 
         // Project to response type
         var pagedQuery = query.Select(m => new Responses.MatchResponse
         {
+            Id = m.Id,
             Name = m.Name,
             Description = m.Description,
-            CoverImages = m.CoverImages.Select(x => new Responses.MatchMedia
+            Price = m.Price,
+            Quantity = m.Quantity,
+            CoverImages = m.CoverImages.Where(x => !x.IsDeleted).Select(x => new Responses.MatchMedia
             {
                 Id = x.Id,
                 Url = x.Url
@@ -55,8 +74,8 @@ public class GetMatchByFactoryIdQueryHandler: IQueryHandler<Contract.Services.Ma
         // Create paged result - using default paging
         var result = await PagedResult<Responses.MatchResponse>.CreateAsync(
             pagedQuery, 
-            1, // Default page index 
-            10); // Default page size
+            request.PageIndex, 
+            request.PageSize); // Default page size
 
         return Result.Success(result);
     }

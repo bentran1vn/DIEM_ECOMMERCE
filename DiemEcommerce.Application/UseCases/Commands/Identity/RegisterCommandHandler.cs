@@ -74,6 +74,6 @@ public class RegisterCommandHandler : ICommandHandler<Command.RegisterCommand>
         }
         
 
-        return Result.Success(user);
+        return Result.Success("Register Success !");
     }
 }

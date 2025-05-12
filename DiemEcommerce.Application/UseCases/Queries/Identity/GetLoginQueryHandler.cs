@@ -51,7 +51,6 @@ public class GetLoginQueryHandler : IQueryHandler<Query.Login, Response.Authenti
         
         TimeZoneInfo vietnamTimeZone = TimeZoneInfo.FindSystemTimeZoneById("SE Asia Standard Time");
         
-        
         // Generate JWT Token
         var claims = new List<Claim>
         {
@@ -87,7 +86,19 @@ public class GetLoginQueryHandler : IQueryHandler<Query.Login, Response.Authenti
         {
             AccessToken = accessToken,
             RefreshToken = refreshToken,
-            RefreshTokenExpiryTime = TimeZoneInfo.ConvertTime(DateTimeOffset.UtcNow.AddMinutes(15), vietnamTimeZone)
+            RefreshTokenExpiryTime = TimeZoneInfo.ConvertTime(DateTimeOffset.UtcNow.AddMinutes(15), vietnamTimeZone),
+            User = new Response.GetMe()
+            {
+                Id = user.Id,
+                Email = user.Email,
+                Username = user.Username,
+                Firstname = user.FirstName,
+                Lastname = user.LastName,
+                PhoneNumber = user.PhoneNumber,
+                RoleName = user.Roles.Name,
+                FactoryId = user.FactoriesId,
+                CreatedOnUtc = TimeZoneInfo.ConvertTime(user.CreatedOnUtc, vietnamTimeZone)
+            }
         };
         
         var slidingExpiration = request.SlidingExpirationInMinutes == 0 ? 10 : request.SlidingExpirationInMinutes;

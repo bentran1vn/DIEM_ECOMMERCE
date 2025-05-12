@@ -37,7 +37,7 @@ public class GetMatchByIdQueryHandler : IQueryHandler<Contract.Services.Match.Qu
             Description = match.Description,
             Price = match.Price,
             Quantity = match.Quantity,
-            CoverImages = match.CoverImages.Select(x => new Responses.MatchMedia
+            CoverImages = match.CoverImages.Where(x => !x.IsDeleted).Select(x => new Responses.MatchMedia
             {
                 Id = x.Id,
                 Url = x.Url

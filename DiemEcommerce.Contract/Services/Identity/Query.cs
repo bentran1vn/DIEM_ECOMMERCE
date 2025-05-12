@@ -25,4 +25,6 @@ public static class Query
     public record Token(string AccessToken, string RefreshToken) : IQuery<Response.Authenticated>;
 
     public record GetMe(Guid UserId) : IQuery<Response.GetMe>;
+    
+    public record GetUsers(string? SearchTerm, int PageIndex, int PageSize) : IQuery<PagedResult<Response.GetMe>>;
 }

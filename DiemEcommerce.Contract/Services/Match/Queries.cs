@@ -10,6 +10,6 @@ public class Queries
 
     public record GetMatchByIdQuery(Guid Id) : IQuery<Responses.MatchDetailResponse>;
     
-    public record GetMatchByFactoryIdQuery(Guid Id) : IQuery<PagedResult<Responses.MatchResponse>>;
+    public record GetMatchByFactoryIdQuery(Guid Id, List<Guid>? CategoryId, string? SearchTerm, int PageIndex, int PageSize) : IQuery<PagedResult<Responses.MatchResponse>>;
 
 }
