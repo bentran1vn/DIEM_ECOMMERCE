@@ -45,8 +45,8 @@ public class VerifyCodeCommandHandler : ICommandHandler<Command.VerifyCodeComman
         var claims = new List<Claim>
         {
             new Claim(ClaimTypes.Email, user.Email),
-            new Claim(ClaimTypes.Role, user.Roles.ToString()),
-            new Claim("Role", user.Roles.ToString()),
+            new Claim(ClaimTypes.Role, user.Roles.Name),
+            new Claim("Role", user.Roles.Name),
             new Claim("UserId", user.Id.ToString()),
             new Claim(ClaimTypes.Name, user.Email),
             new Claim(ClaimTypes.Name, user.Username),
